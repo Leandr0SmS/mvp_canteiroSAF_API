@@ -14,7 +14,7 @@ API implementada em Python e Flask com 3 rotas:
 
 ## Iniciando
 
-### Dependencies
+### Dependências
 
 Será necessário ter todas as libs python listadas no `requirements.txt` instaladas.
 
