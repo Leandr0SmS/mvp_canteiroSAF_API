@@ -7,8 +7,8 @@ import os
 from model.base import Base
 from model.plantas import Planta
 from model.estratos import Estrato
-from model.init_data import estratos_data
-from model.insert_func import insert_estratos
+from model.init_data import estratos_data, plantas_data
+from model.insert_func import insert_estratos, insert_plantas
 
 db_path = "database/"
 # Verifica se o diretorio não existe
@@ -27,16 +27,23 @@ Session = sessionmaker(bind=engine)
 
 # cria o banco se ele não existir 
 if not database_exists(engine.url):
-    create_database(engine.url) 
+   create_database(engine.url) 
 
-    # cria as tabelas do banco, caso não existam
-    Base.metadata.create_all(engine)
+   # cria as tabelas do banco, caso não existam
+   Base.metadata.create_all(engine)
 
-    # criando conexão com a base
-    session = Session()
-
-    # Inserir estratos na tabela estratos
-    insert_estratos(estratos_data, session)
+   # criando conexão com a base
+   session = Session()
+   # Inserir estratos na tabela estratos
+   insert_estratos(estratos_data, session)
+   # efetivando o camando de adição de novo item na tabela
+   session.commit()
+   
+   # criando conexão com a base
+   session = Session()
+   # Inserir plantas na tabela plantas
+   insert_plantas(plantas_data, session)
+   # efetivando o camando de adição de novo item na tabela
+   session.commit()
     
-    # efetivando o camando de adição de novo item na tabela
-    session.commit()
+    

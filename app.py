@@ -107,10 +107,9 @@ def get_planta(query: CanteiroBuscaSchema):
         if not all(isinstance(item, Planta) for item in listaCanteiro):
             # se o produto não foi encontrado
             print(listaCanteiro)
-            error_msg = "erro na seleção de plantas :/"
+            error_msg = "erro na seleção de plantas"
             return {"mesage": error_msg}, 404
         else:
-            print(listaCanteiro)
             # retorna a representação de produto
             return apresenta_plantas(listaCanteiro), 200
 
