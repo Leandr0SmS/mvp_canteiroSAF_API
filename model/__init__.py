@@ -6,8 +6,9 @@ import os
 # importando os elementos definidos no modelo
 from model.base import Base
 from model.plantas import Planta
-from model.estratos import Estrato, estratos_list
-from model.estrato_values import insert_estratos
+from model.estratos import Estrato
+from model.init_data import estratos_data
+from model.insert_func import insert_estratos
 
 db_path = "database/"
 # Verifica se o diretorio não existe
@@ -35,7 +36,7 @@ if not database_exists(engine.url):
     session = Session()
 
     # Inserir estratos na tabela estratos
-    insert_estratos(estratos_list, session)
+    insert_estratos(estratos_data, session)
     
     # efetivando o camando de adição de novo item na tabela
     session.commit()

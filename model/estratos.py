@@ -3,8 +3,6 @@ from sqlalchemy.orm import relationship
 
 from model import Base
 
-estratos_list = [["baixo", 80], ["medio", 60], ["alto", 40], ["emergente", 20]]
-
 class Estrato(Base):
     __tablename__ = 'estrato'
 
