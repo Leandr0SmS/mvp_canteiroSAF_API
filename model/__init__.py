@@ -31,6 +31,13 @@ if not database_exists(engine.url):
 
    # cria as tabelas do banco, caso não existam
    Base.metadata.create_all(engine)
+   
+   # criando conexão com a base
+   session = Session()
+   # Inserir plantas na tabela plantas
+   insert_plantas(plantas_data, session)
+   # efetivando o camando de adição de novo item na tabela
+   session.commit()
 
    # criando conexão com a base
    session = Session()
@@ -39,11 +46,5 @@ if not database_exists(engine.url):
    # efetivando o camando de adição de novo item na tabela
    session.commit()
    
-   # criando conexão com a base
-   session = Session()
-   # Inserir plantas na tabela plantas
-   insert_plantas(plantas_data, session)
-   # efetivando o camando de adição de novo item na tabela
-   session.commit()
     
     

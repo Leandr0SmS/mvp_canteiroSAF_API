@@ -18,7 +18,7 @@ class CanteiroBuscaSchema(BaseModel):
     nome_planta_emergente: str = "Eucalipto"
     nome_planta_alto: str = "Jucara"
     nome_planta_medio: str = "Pimenta-do-reino"
-    nome_planta_baixo: str = "abacaxi"
+    nome_planta_baixo: str = "Abacaxi"
 
 
 class PlantaBuscaSchema(BaseModel):

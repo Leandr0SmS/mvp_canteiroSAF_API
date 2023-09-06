@@ -16,14 +16,14 @@ plantas_data = [
     {
         "espacamento": 0.4,
         "estrato": "baixo",
-        "nome_planta": "Abóbora ",
+        "nome_planta": "Abóbora",
         "tempo_colheita": 90
     },
     {
         "espacamento": 0.4,
         "estrato": "baixo",
         "nome_planta": "Abacaxi",
-        "tempo_colheita": 90
+        "tempo_colheita": 730
     },
     {
         "espacamento": 0.3,

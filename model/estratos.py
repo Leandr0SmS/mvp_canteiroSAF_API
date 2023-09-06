@@ -8,6 +8,9 @@ class Estrato(Base):
 
     nome_estrato = Column(String(50), primary_key=True)
     porcentagem_sombra = Column(Integer, nullable=False)
+    
+    # Definição do relacionamento entre o estrato e planta.
+    planta = relationship('Planta')
 
     def __init__(self, nome_estrato:str, porcentagem_sombra:int):
         """
@@ -19,3 +22,6 @@ class Estrato(Base):
         """
         self.nome_estrato = nome_estrato
         self.porcentagem_sombra = porcentagem_sombra
+        
+    def __repr__(self):
+        return f'Planta("{self.nome_estrato}")'

@@ -12,7 +12,7 @@ class Planta(Base):
     tempo_colheita = Column(Integer, nullable=False)
     espacamento = Column(Float, nullable=False)
 
-    # Definição do relacionamento entre o planta e um estrato..
+    # Definição de ForeignKey da tabela estrato.
     estrato = Column(String(50), ForeignKey("estrato.nome_estrato"), nullable=False)
 
     def __init__(self, nome_planta:str, tempo_colheita:str, estrato:str,
@@ -29,3 +29,6 @@ class Planta(Base):
         self.tempo_colheita = tempo_colheita
         self.estrato = estrato
         self.espacamento = espacamento
+        
+    def __repr__(self):
+        return f'Planta("{self.nome_planta}","{self.estrato}")'

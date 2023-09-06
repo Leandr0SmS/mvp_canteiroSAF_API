@@ -94,23 +94,32 @@ def get_planta(query: CanteiroBuscaSchema):
     # criando conexão com a base
     with Session() as session:
         # fazendo a busca
-        planta_emergente = session.query(Planta).filter(func.lower(Planta.nome_planta) == nome_planta_emergente.lower()).first()
+        planta_emergente = session.query(Planta, Estrato)\
+            .join(Estrato, Planta.estrato == Estrato.nome_estrato)\
+            .filter(Planta.nome_planta == nome_planta_emergente).first()
         listaCanteiro.append(planta_emergente)
-        planta_alto = session.query(Planta).filter(func.lower(Planta.nome_planta) == nome_planta_alto.lower()).first()
+        planta_alto = session.query(Planta, Estrato)\
+            .join(Estrato, Planta.estrato == Estrato.nome_estrato)\
+            .filter(Planta.nome_planta == nome_planta_alto).first()
         listaCanteiro.append(planta_alto)
-        planta_medio = session.query(Planta).filter(func.lower(Planta.nome_planta) == nome_planta_medio.lower()).first()
+        planta_medio = session.query(Planta, Estrato)\
+            .join(Estrato, Planta.estrato == Estrato.nome_estrato)\
+            .filter(Planta.nome_planta == nome_planta_medio).first()
         listaCanteiro.append(planta_medio)
-        planta_baixo = session.query(Planta).filter(func.lower(Planta.nome_planta) == nome_planta_baixo.lower()).first()
+        planta_baixo = session.query(Planta, Estrato)\
+            .join(Estrato, Planta.estrato == Estrato.nome_estrato)\
+            .filter(Planta.nome_planta == nome_planta_baixo).first()
         listaCanteiro.append(planta_baixo)
         session.commit()
 
-        if not all(isinstance(item, Planta) for item in listaCanteiro):
+        if all(value for value in listaCanteiro):
             # se o produto não foi encontrado
             print(listaCanteiro)
             error_msg = "erro na seleção de plantas"
             return {"mesage": error_msg}, 404
         else:
             # retorna a representação de produto
+            print(listaCanteiro)
             return apresenta_plantas(listaCanteiro), 200
 
 
