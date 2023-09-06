@@ -79,7 +79,7 @@ def get_plantas():
 
 
 @app.get('/canteiro', tags=[canteiro_tag],
-         responses={"200": ListagemPlantasSchema, "404": ErrorSchema})
+         responses={"200": ListagemCanteiroSchema, "404": ErrorSchema})
 def get_planta(query: CanteiroBuscaSchema):
     """Faz a busca das plantas selecionadas de um canteiro a partir da nome de cada planta
 
@@ -112,7 +112,7 @@ def get_planta(query: CanteiroBuscaSchema):
         listaCanteiro.append(planta_baixo)
         session.commit()
 
-        if all(value for value in listaCanteiro):
+        if not all(tuple is not None for tuple in listaCanteiro):
             # se o produto não foi encontrado
             print(listaCanteiro)
             error_msg = "erro na seleção de plantas"
@@ -120,7 +120,7 @@ def get_planta(query: CanteiroBuscaSchema):
         else:
             # retorna a representação de produto
             print(listaCanteiro)
-            return apresenta_plantas(listaCanteiro), 200
+            return apresenta_canteiro(listaCanteiro), 200
 
 
 @app.delete('/planta', tags=[planta_tag],

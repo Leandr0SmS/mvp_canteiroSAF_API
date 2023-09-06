@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional, List
 from model.plantas import Planta
-
+from model.estratos import Estrato
 
 class PlantaSchema(BaseModel):
     """ Define como uma nova planta a ser inserida deve ser representada
@@ -10,44 +10,13 @@ class PlantaSchema(BaseModel):
     tempo_colheita: int = 420
     estrato: str = "alto"
     espacamento: float = 3.0
+ 
     
-class CanteiroBuscaSchema(BaseModel):
-    """ Define como deve ser a estrutura que representa a busca. Que será
-        com base no nome das plantas.
-    """
-    nome_planta_emergente: str = "Eucalipto"
-    nome_planta_alto: str = "Jucara"
-    nome_planta_medio: str = "Pimenta-do-reino"
-    nome_planta_baixo: str = "Abacaxi"
-
-
 class PlantaBuscaSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será
         feita apenas com base no nome da planta.
     """
     nome_planta: str = "Bananeira Prata"
-
-
-class ListagemPlantasSchema(BaseModel):
-    """ Define como uma listagem de plantas será retornada.
-    """
-    plantas:List[PlantaSchema]
-
-
-def apresenta_plantas(plantas: List[Planta]):
-    """ Retorna uma representação de uma planta seguindo o schema definido em
-        PlantaViewSchema.
-    """
-    result = []
-    for planta in plantas:
-        result.append({
-            "nome_planta": planta.nome_planta,
-            "tempo_colheita": planta.tempo_colheita,
-            "estrato": planta.estrato,
-            "espacamento": planta.espacamento,
-        })
-
-    return {"plantas": result}
 
 
 class PlantaViewSchema(BaseModel):
@@ -66,6 +35,13 @@ class PlantaDelSchema(BaseModel):
     """
     mesage: str
     nome_planta: str
+    
+    
+class ListagemPlantasSchema(BaseModel):
+    """ Define como uma listagem de plantas será retornada.
+    """
+    plantas:List[PlantaSchema]
+
 
 def apresenta_planta(planta: Planta):
     """ Retorna uma representação do planta seguindo o schema definido em
@@ -78,3 +54,64 @@ def apresenta_planta(planta: Planta):
         "estrato": planta.estrato,
         "espacamento": planta.espacamento,
     }
+   
+    
+def apresenta_plantas(plantas: List[Planta]):
+    """ Retorna uma representação de uma planta seguindo o schema definido em
+        PlantaViewSchema.
+    """
+    result = []
+    for planta in plantas:
+        result.append({
+            "nome_planta": planta.nome_planta,
+            "tempo_colheita": planta.tempo_colheita,
+            "estrato": planta.estrato,
+            "espacamento": planta.espacamento,
+        })
+
+    return {"plantas": result}
+    
+    
+class CanteiroBuscaSchema(BaseModel):
+    """ Define como deve ser a estrutura que representa a busca. Que será
+        com base no nome das plantas.
+    """
+    nome_planta_emergente: str = "Eucalipto"
+    nome_planta_alto: str = "Jucara"
+    nome_planta_medio: str = "Pimenta-do-reino"
+    nome_planta_baixo: str = "Abacaxi"
+
+ 
+class PlantaCanteiroSchema(BaseModel):
+    """ Define como uma planta representada em um canteiro
+    """
+    nome_planta: str = "Bananeira Prata",
+    tempo_colheita: int = 420,
+    estrato: str = "alto",
+    sombra: int = 40,
+    espacamento: float = 3.0,
+    
+       
+class ListagemCanteiroSchema(BaseModel):
+    """ Define como uma listagem de plantas será retornada.
+    """
+    canteiro:List[PlantaCanteiroSchema]
+
+
+def apresenta_canteiro(plantas_canteiro: tuple[(Planta, Estrato)]):
+    """ Retorna uma representação de um canteiro com as plantas e seus estratos.
+    """
+    result = []
+    for info in plantas_canteiro:
+        planta, estrato = info
+        result.append({
+            "nome_planta": planta.nome_planta,
+            "tempo_colheita": planta.tempo_colheita,
+            "estrato": planta.estrato,
+            "sombra": estrato.porcentagem_sombra,
+            "espacamento": planta.espacamento,
+        })
+
+    return {"plantas": result}
+
+
