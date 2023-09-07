@@ -16,30 +16,22 @@ API implementada em Python e Flask com 3 rotas:
 
 ### Dependências
 
-Será necessário ter todas as libs python listadas no `requirements.txt` instaladas.
+Será necessário ter [python]{https://www.python.org/} e todas as libs listadas no `requirements.txt` instaladas.
 
-> É fortemente indicado o uso de ambientes virtuais do tipo [virtualenv](https://docs.python.org/3/library/venv.html).
+> É fortemente indicado o uso de ambientes virtuais do tipo [virtual environments](https://docs.python.org/3/library/venv.html).
 
 ### Instalando
 
-Este comando instala as dependências/bibliotecas, descritas no arquivo `requirements.txt`.
+Instalar dependências descritas no arquivo `requirements.txt`.
 ```
 (env)$ pip install -r requirements.txt
 ```
 
-### Executando a API
+### Executando
 
-Para executar a API basta executar o comando:
-
+Executar o comando:
 ```
 (env)$ flask run --host 0.0.0.0 --port 5000
-```
-
-Em modo de desenvolvimento é recomendado executar utilizando o parâmetro reload, que reiniciará o servidor
-automaticamente após uma mudança no código fonte. 
-
-```
-(env)$ flask run --host 0.0.0.0 --port 5000 --reload
 ```
 
 ## Autor
@@ -48,19 +40,14 @@ automaticamente após uma mudança no código fonte.
 
 ## Licença
 
-   Copyright 2023 Leandro Simões
+The MIT License (MIT)
+Copyright © 2023 Leandro Simões
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-       http://www.apache.org/licenses/LICENSE-2.0
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ## Inspirações
 
