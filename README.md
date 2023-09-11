@@ -1,6 +1,12 @@
 # MVP Canteiro SAF - API
 
-API elaborada para conclusão da Sprint Desenvolvimento Full Stack Básico da Pós graduação Engenharia de software da PUC Rio.
+    API elaborada para conclusão da Sprint Desenvolvimento Full Stack Básico da Pós graduação Engenharia de software da PUC Rio.
+Este projeto busca auxiliar no planejamento de sistemas agroflorestais (SAF) que combinem espécies vegetais de diferentes estratos verticais.<br>
+A seleção das espécies que irão compor um SAF é de grande importância para sua eficiência.
+
+O projeto permite ao usuário:
+- Inserir/Excluir espécies do banco de dados;
+- Selecionar uma espécie por estrato para criar um canteiro apresentando informações pertinentes para realizar o planejamento, manejo e colheita do SAF; 
 
 ## Descrição
 
@@ -10,7 +16,7 @@ API implementada em Python e Flask com 3 rotas:
 - `/plantas` => 
     Faz a busca por todas as Plantas cadastradas. Retorna uma representação da listagem de plantas.
 - `/canteiro` => 
-    Faz a busca das plantas selecionadas de um canteiro a partir da nome de cada planta. Retorna uma representação do canteiro.
+    Faz a busca das plantas selecionadas de um canteiro a partir da nome de cada planta. Retorna uma representação do canteiro de um SAF.
 
 ## Iniciando
 
