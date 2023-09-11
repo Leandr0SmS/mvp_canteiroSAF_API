@@ -7,8 +7,8 @@ import os
 from model.base import Base
 from model.plantas import Planta
 from model.estratos import Estrato
-from model.init_data import estratos_data, plantas_data
-from model.insert_func import insert_estratos, insert_plantas
+from database.init_data import estratos_data, plantas_data
+from database.insert_func import insert_estratos, insert_plantas
 
 db_path = "database/"
 # Verifica se o diretorio não existe
