@@ -34,6 +34,8 @@ Executar o comando:
 (env)$ flask run --host 0.0.0.0 --port 5000
 ```
 
+> **Banco de Dados** - Será iniciado e carregado com informações pré definidas.
+
 ## Autor
  
 [Leandro Simões](https://github.com/Leandr0SmS)
