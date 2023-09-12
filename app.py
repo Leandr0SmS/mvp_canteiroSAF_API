@@ -85,10 +85,10 @@ def get_planta(query: CanteiroBuscaSchema):
 
     Retorna uma representação do canteiro.
     """
-    nome_planta_emergente = query.nome_planta_emergente
-    nome_planta_alto = query.nome_planta_alto
-    nome_planta_medio = query.nome_planta_medio
-    nome_planta_baixo = query.nome_planta_baixo
+    id_planta_emergente = query.id_planta_emergente
+    id_planta_alto = query.id_planta_alto
+    id_planta_medio = query.id_planta_medio
+    id_planta_baixo = query.id_planta_baixo
     
     listaCanteiro = []
     # criando conexão com a base
@@ -96,19 +96,19 @@ def get_planta(query: CanteiroBuscaSchema):
         # fazendo a busca
         planta_emergente = session.query(Planta, Estrato)\
             .join(Estrato, Planta.estrato == Estrato.nome_estrato)\
-            .filter(Planta.nome_planta == nome_planta_emergente).first()
+            .filter(Planta.id_planta == id_planta_emergente).first()
         listaCanteiro.append(planta_emergente)
         planta_alto = session.query(Planta, Estrato)\
             .join(Estrato, Planta.estrato == Estrato.nome_estrato)\
-            .filter(Planta.nome_planta == nome_planta_alto).first()
+            .filter(Planta.id_planta == id_planta_alto).first()
         listaCanteiro.append(planta_alto)
         planta_medio = session.query(Planta, Estrato)\
             .join(Estrato, Planta.estrato == Estrato.nome_estrato)\
-            .filter(Planta.nome_planta == nome_planta_medio).first()
+            .filter(Planta.id_planta == id_planta_medio).first()
         listaCanteiro.append(planta_medio)
         planta_baixo = session.query(Planta, Estrato)\
             .join(Estrato, Planta.estrato == Estrato.nome_estrato)\
-            .filter(Planta.nome_planta == nome_planta_baixo).first()
+            .filter(Planta.id_planta == id_planta_baixo).first()
         listaCanteiro.append(planta_baixo)
         session.commit()
 
@@ -139,8 +139,8 @@ def del_planta(query: PlantaBuscaSchema):
         session.commit()
     if count:
         # retorna a representação da mensagem de confirmação
-        return {"mesage": "Planta removida", "id": planta_nome}
+        return {"mesage": "Planta removida", "nome_planta": planta_nome}
     else:
         # se o planta não foi encontrada
-        error_msg = "Planta não encontrado na base :/"
+        error_msg = "Planta não encontrada na base :/"
         return {"message": error_msg}, 404

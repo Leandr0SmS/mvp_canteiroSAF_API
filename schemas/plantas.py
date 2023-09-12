@@ -63,6 +63,7 @@ def apresenta_plantas(plantas: List[Planta]):
     result = []
     for planta in plantas:
         result.append({
+            "id_planta": planta.id_planta,
             "nome_planta": planta.nome_planta,
             "tempo_colheita": planta.tempo_colheita,
             "estrato": planta.estrato,
@@ -76,10 +77,10 @@ class CanteiroBuscaSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será
         com base no nome das plantas.
     """
-    nome_planta_emergente: str = "Eucalipto"
-    nome_planta_alto: str = "Jucara"
-    nome_planta_medio: str = "Pimenta-do-reino"
-    nome_planta_baixo: str = "Abacaxi"
+    id_planta_emergente: str = "11"
+    id_planta_alto: str = "22"
+    id_planta_medio: str = "18"
+    id_planta_baixo: str = "03"
 
  
 class PlantaCanteiroSchema(BaseModel):

@@ -22,11 +22,13 @@ API implementada em Python e Flask com 3 rotas:
 
 ### Dependências
 
-Será necessário ter [python]{https://www.python.org/} e todas as libs listadas no `requirements.txt` instaladas.
+Será necessário:
+- [python]{https://www.python.org/};
+- `requirements.txt` instalado.
 
 > É fortemente indicado o uso de ambientes virtuais do tipo [virtual environments](https://docs.python.org/3/library/venv.html).
 
-### Instalando
+### Instalando Requirements
 
 Instalar dependências descritas no arquivo `requirements.txt`.
 ```
