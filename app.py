@@ -20,7 +20,8 @@ canteiro_tag = Tag(name="Canteiro", description="Seleção de plantas da base pa
 
 @app.get('/', tags=[home_tag])
 def home():
-    """Redireciona para /openapi, tela que permite a escolha do estilo de documentação.
+    """Redireciona para /openapi, tela que permite a escolha do estilo de documentação. 
+    
     """
     return redirect('/openapi')
 
