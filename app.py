@@ -7,6 +7,7 @@ from sqlalchemy import func
 
 from model import Session, Planta, Estrato
 from schemas import *
+from logger import logger
 from flask_cors import CORS
 
 info = Info(title="Minha API", version="1.0.0")
@@ -39,22 +40,26 @@ def add_planta(form: PlantaSchema):
         estrato=form.estrato,
         espacamento=form.espacamento,
         )
+    logger.debug(f"Adicionando planta de nome: '{planta.nome_planta}'")
     try:
         # criando conexão com a base
         with Session() as session:
             # adicionando planta
             session.add(planta)
             session.commit()
+            logger.debug(f"Adicionado planta de nome: '{planta.nome_planta}'")
             return apresenta_planta(planta), 200
 
     except IntegrityError as e:
         # como a duplicidade do nome é a provável razão do IntegrityError
         error_msg = "Planta de mesmo nome já salvo na base :/"
+        logger.warning(f"Erro ao adicionar planta '{planta.nome_planta}', {error_msg}")
         return {"mesage": error_msg}, 409
 
     except Exception as e:
         # caso um erro fora do previsto
         error_msg = "Não foi possível salvar nova plnata :/"
+        logger.warning(f"Erro ao adicionar planta '{planta.nome_planta}', {error_msg}")
         return {"mesage": error_msg}, 400
 
 
@@ -65,6 +70,7 @@ def get_plantas():
 
     Retorna uma representação da listagem de plantas.
     """
+    logger.debug(f"Coletando plantas ")
     # criando conexão com a base
     with Session() as session:
         # fazendo a busca
@@ -75,6 +81,7 @@ def get_plantas():
             # se não há produtos cadastrados
             return {"plantas": []}, 200
         else:
+            logger.debug(f"%d plantas econtrados" % len(plantas))
             # retorna a representação de planta
             return apresenta_plantas(plantas), 200
 
@@ -92,6 +99,12 @@ def get_planta(query: CanteiroBuscaSchema):
     id_planta_baixo = query.id_planta_baixo
     
     listaCanteiro = []
+    logger.debug(f"""Coletando dados para montar canteiro 
+                 #{id_planta_emergente}
+                 #{id_planta_alto}
+                 #{id_planta_medio}
+                 #{id_planta_baixo}
+                 """)
     # criando conexão com a base
     with Session() as session:
         # fazendo a busca
@@ -117,8 +130,10 @@ def get_planta(query: CanteiroBuscaSchema):
             # se o produto não foi encontrado
             print(listaCanteiro)
             error_msg = "erro na seleção de plantas"
+            logger.warning(f"Erro ao montar canteiro '{listaCanteiro}', {error_msg}")
             return {"mesage": error_msg}, 404
         else:
+            logger.debug(f"Canteiro montado: '{listaCanteiro}'")
             # retorna a representação de produto
             return apresenta_canteiro(listaCanteiro), 200
 
@@ -131,7 +146,7 @@ def del_planta(query: PlantaBuscaSchema):
     Retorna uma mensagem de confirmação da remoção.
     """
     planta_nome = unquote(unquote(query.nome_planta))
-    print(planta_nome)
+    logger.debug(f"Deletando dados sobre planta #{planta_nome}")
     # criando conexão com a base
     with Session() as session:
         # fazendo a remoção
@@ -139,8 +154,10 @@ def del_planta(query: PlantaBuscaSchema):
         session.commit()
     if count:
         # retorna a representação da mensagem de confirmação
+        logger.debug(f"Deletado produto #{planta_nome}")
         return {"mesage": "Planta removida", "nome_planta": planta_nome}
     else:
         # se o planta não foi encontrada
         error_msg = "Planta não encontrada na base :/"
+        logger.warning(f"Erro ao deletar planta #'{planta_nome}', {error_msg}")
         return {"message": error_msg}, 404
