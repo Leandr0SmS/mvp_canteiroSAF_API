@@ -119,7 +119,6 @@ def get_planta(query: CanteiroBuscaSchema):
             return {"mesage": error_msg}, 404
         else:
             # retorna a representação de produto
-            print(listaCanteiro)
             return apresenta_canteiro(listaCanteiro), 200
 
 
