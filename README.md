@@ -12,7 +12,7 @@ O projeto permite ao usuário:
 
 API implementada em Python e Flask com 3 rotas:
 - `/planta` => 
-    Adiciona uma nova Planta à base de dados. Retorna uma representação da planta.
+    Adiciona ou remove uma nova Planta à base de dados. Retorna uma representação da planta adicionada ou o nome da planta deletada.
 - `/plantas` => 
     Faz a busca por todas as Plantas cadastradas. Retorna uma representação da listagem de plantas.
 - `/canteiro` => 
