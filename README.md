@@ -23,10 +23,10 @@ API implementada em Python e Flask com 3 rotas:
 ### Dependências
 
 Será necessário:
-- [python]{https://www.python.org/};
+- [python](https://www.python.org/): Versão superior a 3.5
 - `requirements.txt` instalado.
 
-> É fortemente indicado o uso de ambientes virtuais do tipo [virtual environments](https://docs.python.org/3/library/venv.html).
+> É fortemente indicado o uso de ambientes virtuais do tipo: [virtual environments](https://docs.python.org/3/library/venv.html).
 
 ### Instalando Requirements
 

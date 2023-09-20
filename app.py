@@ -58,7 +58,7 @@ def add_planta(form: PlantaSchema):
 
     except Exception as e:
         # caso um erro fora do previsto
-        error_msg = "Não foi possível salvar nova plnata :/"
+        error_msg = "Não foi possível salvar nova planta :/"
         logger.warning(f"Erro ao adicionar planta '{planta.nome_planta}', {error_msg}")
         return {"mesage": error_msg}, 400
 
