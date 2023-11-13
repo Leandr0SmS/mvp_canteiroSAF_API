@@ -42,6 +42,10 @@ Executar o comando:
 (env)$ flask run --host 0.0.0.0 --port 5000
 ```
 
+Replit:
+
+[![Run on Repl.it](https://replit.com/badge/github/Leandr0SmS/puc_rio-mvp_1-back_end)](https://replit.com/new/github/Leandr0SmS/puc_rio-mvp_1-back_end)
+
 > **Banco de Dados** - Será iniciado e carregado com informações pré definidas.
 
 ## Autor
