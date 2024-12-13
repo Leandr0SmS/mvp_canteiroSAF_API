@@ -39,14 +39,14 @@ class PlantaDelSchema(BaseModel):
     
     
 class ListagemPlantasSchema(BaseModel):
-    """ Define como uma listagem de plantas será retornada.
+    """ Define como uma listagem das plantas será retornada.
     """
     plantas:List[PlantaSchema]
 
 
 def apresenta_planta(planta: Planta):
-    """ Retorna uma representação do planta seguindo o schema definido em
-        ProdutoViewSchema.
+    """ Retorna uma representação da planta seguindo o schema definido em
+        PlantaViewSchema.
     """
     return {
         "id_planta": planta.id_planta,
