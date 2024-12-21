@@ -78,7 +78,7 @@ def get_plantas():
         session.commit()
 
         if not plantas:
-            # se não há produtos cadastrados
+            # se não há plantas cadastradas
             return {"plantas": []}, 200
         else:
             logger.debug(f"%d plantas econtrados" % len(plantas))
@@ -127,14 +127,14 @@ def get_planta(query: CanteiroBuscaSchema):
         session.commit()
 
         if not all(tuple is not None for tuple in listaCanteiro):
-            # se o produto não foi encontrado
+            # se a planta não foi encontrada
             print(listaCanteiro)
             error_msg = "erro na seleção de plantas"
             logger.warning(f"Erro ao montar canteiro '{listaCanteiro}', {error_msg}")
             return {"mesage": error_msg}, 404
         else:
             logger.debug(f"Canteiro montado: '{listaCanteiro}'")
-            # retorna a representação de produto
+            # retorna a representação da planta
             return apresenta_canteiro(listaCanteiro), 200
 
 
