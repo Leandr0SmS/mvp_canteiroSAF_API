@@ -154,7 +154,7 @@ def del_planta(query: PlantaBuscaSchema):
         session.commit()
     if count:
         # retorna a representação da mensagem de confirmação
-        logger.debug(f"Deletado produto #{planta_nome}")
+        logger.debug(f"Deletado planta #{planta_nome}")
         return {"mesage": "Planta removida", "nome_planta": planta_nome}
     else:
         # se o planta não foi encontrada
