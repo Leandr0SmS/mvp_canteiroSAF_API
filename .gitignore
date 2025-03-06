@@ -8,3 +8,5 @@ venv/
 #logs
 /log
 .log
+#database
+*.sqlite3

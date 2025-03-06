@@ -63,8 +63,6 @@ $ docker run -p 5000:5000 meu_canteiro_api
 
 Uma vez executando, para acessar a API, basta abrir o [http://localhost:5000/#/](http://localhost:5000/#/) no navegador.
 
-
-
 ### Alguns comandos úteis do Docker
 
 >**Para verificar se a imagem foi criada** você pode executar o seguinte comando:
@@ -79,6 +77,11 @@ Uma vez executando, para acessar a API, basta abrir o [http://localhost:5000/#/]
 >```
 >Subistituindo o `IMAGE ID` pelo código da imagem
 >
+> Caso queira **remover todas as images**, basta executar o comando:
+>```
+>$ docker rmi -f $(docker images -aq)
+>```
+>
 >**Para verificar se o container está em exceução** você pode executar o seguinte comando:
 >
 >```
@@ -91,10 +94,18 @@ Uma vez executando, para acessar a API, basta abrir o [http://localhost:5000/#/]
 >```
 >Subistituindo o `CONTAINER ID` pelo ID do conatiner
 >
+> Caso queira **parar todos os conatiner**, basta executar o comando:
+>```
+>$ docker stop $(docker ps -a -q)
+>```
 >
 > Caso queira **destruir um conatiner**, basta executar o comando:
 >```
 >$ docker rm <CONTAINER ID>
+>```
+> Caso queira **destruir todos os conatiners**, basta executar o comando:
+>```
+>$ docker rm $(docker ps -a -q)
 >```
 >Para mais comandos, veja a [documentação do docker](https://docs.docker.com/engine/reference/run/).
 

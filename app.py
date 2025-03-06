@@ -3,7 +3,7 @@ from flask import redirect
 from urllib.parse import unquote
 
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import func
+from sqlalchemy import update
 
 from model import Session, Planta, Estrato
 from schemas import *
@@ -27,7 +27,7 @@ def home():
     return redirect('/openapi')
 
 
-@app.post('/planta', tags=[planta_tag],
+@app.put('/planta', tags=[planta_tag],
           responses={"200": PlantaViewSchema, "409": ErrorSchema, "400": ErrorSchema})
 def add_planta(form: PlantaSchema):
     """Adiciona uma nova Planta à base de dados
@@ -61,7 +61,38 @@ def add_planta(form: PlantaSchema):
         error_msg = "Não foi possível salvar nova planta :/"
         logger.warning(f"Erro ao adicionar planta '{planta.nome_planta}', {error_msg}")
         return {"mesage": error_msg}, 400
-
+    
+@app.post('/planta', tags=[planta_tag],
+            responses={"200": PlantaDelSchema, "404": ErrorSchema})
+def update_planta(query: PlantaUpdateSchema):
+    """
+        Edita informações de uma Planta a partir do nome informado
+    """
+    
+    planta_nome = unquote(unquote(query.nome_planta))
+    logger.debug(f"Editando dados sobre planta #{planta_nome}")
+    
+    with Session() as session:
+        # Buscando planta
+        planta_to_updt = session.query(Planta).filter(Planta.nome_planta == planta_nome).first()
+        
+        if not planta_to_updt:
+            error_msg = "Planta não encontrada na base :/"
+            logger.warning(f"Erro ao editar planta #'{planta_nome}', {error_msg}")
+            return {"message": error_msg}, 404
+        
+        # Editando atributos
+        if query.tempo_colheita is not None:
+            planta_to_updt.tempo_colheita = query.tempo_colheita
+        if query.estrato is not None:
+            planta_to_updt.estrato = query.estrato
+        if query.espacamento is not None:
+            planta_to_updt.espacamento = query.espacamento
+        
+        session.commit()
+        
+        logger.debug(f"Editada planta #{planta_nome}")
+        return {"message": "Planta atualizada", "nome_planta": planta_nome}
 
 @app.get('/plantas', tags=[planta_tag],
          responses={"200": ListagemPlantasSchema, "404": ErrorSchema})
@@ -150,9 +181,9 @@ def del_planta(query: PlantaBuscaSchema):
     # criando conexão com a base
     with Session() as session:
         # fazendo a remoção
-        count = session.query(Planta).filter(Planta.nome_planta == planta_nome).delete()
+        del_planta = session.query(Planta).filter(Planta.nome_planta == planta_nome).delete()
         session.commit()
-    if count:
+    if del_planta:
         # retorna a representação da mensagem de confirmação
         logger.debug(f"Deletado planta #{planta_nome}")
         return {"mesage": "Planta removida", "nome_planta": planta_nome}

@@ -37,6 +37,14 @@ class PlantaDelSchema(BaseModel):
     mesage: str
     nome_planta: str
     
+class PlantaUpdateSchema(BaseModel):
+    """ Define como uma nova planta a ser editada deve ser representada
+    """
+    nome_planta: str = "Bananeira Prata"
+    tempo_colheita: Optional[int] = 300
+    estrato: Optional[str] = "medio"
+    espacamento: Optional[float] = 2
+    
     
 class ListagemPlantasSchema(BaseModel):
     """ Define como uma listagem das plantas será retornada.
