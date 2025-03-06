@@ -1,6 +1,5 @@
 # MVP Canteiro SAF - API
 
-    API elaborada para conclusão da Sprint Desenvolvimento Full Stack Básico da Pós graduação Engenharia de software da PUC Rio.
 Este projeto busca auxiliar no planejamento de sistemas agroflorestais (SAF) que combinem espécies vegetais de diferentes estratos verticais.  
 A seleção das espécies que irão compor um SAF é de grande importância para sua eficiência.
 
@@ -17,35 +16,87 @@ API implementada em Python e Flask com 3 rotas:
 - `/plantas` => Faz a busca por todas as Plantas cadastradas. Retorna uma representação da listagem de plantas.
 - `/canteiro` => Faz a busca das plantas selecionadas de um canteiro a partir da nome de cada planta. Retorna uma representação do canteiro de um SAF.
 
-## Iniciando
+## Executar
 
-### Dependências
+- [Localmente com Python, venv e pip](#localmente-com-python)
+- [Replit](#replit)
+- [Docker](#executar-com-docker)
 
-> É fortemente indicado o uso de ambientes virtuais do tipo: [virtual environments](https://docs.python.org/3/library/venv.html).
+### Localmente com Python
 
-Será necessário:
+Certifique-se de ter o [python](https://www.python.org/) instalado.
 
-- [python](https://www.python.org/)
-- `requirements.txt` instalado.
+Inicializar [virtual environments](https://docs.python.org/3/library/venv.html).
 
-### Instalando Requirements
+Instalar dependências:
 
-Instalar dependências descritas no arquivo `requirements.txt`.
-
-`
+```
 (env)$ pip install -r requirements.txt
-`
+```
 
-### Executando
+Executar o app com o comando:
 
-Executar o comando:
-`
+```
 (env)$ flask run --host 0.0.0.0 --port 5000
-`
+```
 
-Replit:
+### Replit:
 
-[![Run on Repl.it](https://replit.com/badge/github/Leandr0SmS/puc_rio-mvp_1-back_end)](https://replit.com/new/github/Leandr0SmS/puc_rio-mvp_1-back_end)
+[[Run on Replit: https://replit.com/@Leandr0SmS/pucrio-mvp1-backend?v=1]](https://replit.com/@Leandr0SmS/pucrio-mvp1-backend?v=1)
+
+### Executar com Docker
+
+Certifique-se de ter o [Docker](https://docs.docker.com/engine/install/) instalado e em execução em sua máquina.
+
+Navegue até o diretório que contém o Dockerfile e o requirements.txt no terminal.
+Execute **como administrador** o seguinte comando para construir a imagem Docker:
+
+```
+$ docker build -t meu_canteiro_api .
+```
+
+Uma vez criada a imagem, para executar o container basta executar, **como administrador**, seguinte o comando:
+
+```
+$ docker run -p 5000:5000 meu_canteiro_api
+```
+
+Uma vez executando, para acessar a API, basta abrir o [http://localhost:5000/#/](http://localhost:5000/#/) no navegador.
+
+
+
+### Alguns comandos úteis do Docker
+
+>**Para verificar se a imagem foi criada** você pode executar o seguinte comando:
+>
+>```
+>$ docker images
+>```
+>
+> Caso queira **remover uma imagem**, basta executar o comando:
+>```
+>$ docker rmi <IMAGE ID>
+>```
+>Subistituindo o `IMAGE ID` pelo código da imagem
+>
+>**Para verificar se o container está em exceução** você pode executar o seguinte comando:
+>
+>```
+>$ docker container ls --all
+>```
+>
+> Caso queira **parar um conatiner**, basta executar o comando:
+>```
+>$ docker stop <CONTAINER ID>
+>```
+>Subistituindo o `CONTAINER ID` pelo ID do conatiner
+>
+>
+> Caso queira **destruir um conatiner**, basta executar o comando:
+>```
+>$ docker rm <CONTAINER ID>
+>```
+>Para mais comandos, veja a [documentação do docker](https://docs.docker.com/engine/reference/run/).
 
 > **Banco de Dados** - Será iniciado e carregado com informações pré definidas.
 
