@@ -63,13 +63,13 @@ def add_planta(form: PlantaSchema):
         return {"mesage": error_msg}, 400
     
 @app.post('/planta', tags=[planta_tag],
-            responses={"200": PlantaDelSchema, "404": ErrorSchema})
-def update_planta(query: PlantaUpdateSchema):
+            responses={"200": PlantaUpdateSchema, "404": ErrorSchema})
+def update_planta(form: PlantaUpdateSchema):
     """
         Edita informações de uma Planta a partir do nome informado
     """
     
-    planta_nome = unquote(unquote(query.nome_planta))
+    planta_nome = unquote(unquote(form.nome_planta))
     logger.debug(f"Editando dados sobre planta #{planta_nome}")
     
     with Session() as session:
@@ -82,12 +82,12 @@ def update_planta(query: PlantaUpdateSchema):
             return {"message": error_msg}, 404
         
         # Editando atributos
-        if query.tempo_colheita is not None:
-            planta_to_updt.tempo_colheita = query.tempo_colheita
-        if query.estrato is not None:
-            planta_to_updt.estrato = query.estrato
-        if query.espacamento is not None:
-            planta_to_updt.espacamento = query.espacamento
+        if form.tempo_colheita is not None:
+            planta_to_updt.tempo_colheita = form.tempo_colheita
+        if form.estrato is not None:
+            planta_to_updt.estrato = form.estrato
+        if form.espacamento is not None:
+            planta_to_updt.espacamento = form.espacamento
         
         session.commit()
         
