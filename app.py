@@ -1,5 +1,5 @@
 from flask_openapi3 import OpenAPI, Info, Tag
-from flask import redirect
+from flask import redirect, jsonify
 from urllib.parse import unquote
 
 from sqlalchemy.exc import IntegrityError
@@ -10,9 +10,17 @@ from schemas import *
 from logger import logger
 from flask_cors import CORS
 
+import requests
+import os
+from dotenv import load_dotenv 
+import json
+
 info = Info(title="Minha API", version="1.0.0")
 app = OpenAPI(__name__, info=info)
 CORS(app)
+
+# Example API configuration (replace with your API details)
+API_CANTEIRO_URL = "http://127.0.0.1:5001/canteiro"
 
 # definindo tags
 home_tag = Tag(name="Documentação", description="Seleção de documentação: Swagger, Redoc ou RapiDoc")
@@ -164,9 +172,40 @@ def get_planta(query: CanteiroBuscaSchema):
             logger.warning(f"Erro ao montar canteiro '{listaCanteiro}', {error_msg}")
             return {"mesage": error_msg}, 404
         else:
+
+            #try:
+            listaCanteiro_json = json.dumps(apresenta_canteiro(listaCanteiro))
+            headers = {
+                'Content-Type': 'application/json',
+            }
+            # Send POST request to external API
+            response = requests.post(
+                API_CANTEIRO_URL,
+                json=listaCanteiro_json,
+                headers=headers
+            )
+            
+            logger.debug(f"Canteiro montado: '{listaCanteiro}'")
+            # Return the external API's response
+            #return jsonify({
+            #    'status': 'success',
+            #    'external_api_status_code': response.status_code,
+            #    'response_data': response.json()
+            #}), response.status_code
+
+
+            data_canteiro = response.json()
+            #canteiro_plot = data_canteiro.plantas_canteiro
+            print("----------------", data_canteiro)
+            
             logger.debug(f"Canteiro montado: '{listaCanteiro}'")
             # retorna a representação da planta
             return apresenta_canteiro(listaCanteiro), 200
+
+            #except requests.exceptions.RequestException as e:
+            #    logger.warning(f"Erro ao plotar o canteiro '{listaCanteiro}', {error_msg}")
+            #    return {"mesage": error_msg}, 404
+
 
 
 @app.delete('/planta', tags=[planta_tag],

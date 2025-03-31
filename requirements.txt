@@ -20,3 +20,6 @@ SQLAlchemy-Utils
 typing_extensions
 unicode
 Werkzeug
+
+requests
+dotenv
