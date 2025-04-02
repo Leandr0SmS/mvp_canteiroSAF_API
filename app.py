@@ -167,31 +167,36 @@ def get_planta(query: CanteiroBuscaSchema):
 
         if not all(tuple is not None for tuple in listaCanteiro):
             # se a planta não foi encontrada
-            print(listaCanteiro)
             error_msg = "erro na seleção de plantas"
             logger.warning(f"Erro ao montar canteiro '{listaCanteiro}', {error_msg}")
             return {"mesage": error_msg}, 404
         else:
 
             #try:
-            listaCanteiro_json = json.dumps(apresenta_canteiro(listaCanteiro))
+            #listaCanteiro_json = json.dumps(apresenta_canteiro(listaCanteiro))
+            canteiro_data = {
+                "nome_canteiro": "Canteiro_Meu_Canteiro",
+                "x_canteiro": 800,
+                "y_canteiro": 200,
+                "plantas_canteiro": apresenta_canteiro(listaCanteiro)
+            }
+            
+            print(canteiro_data)
+            
             headers = {
                 'Content-Type': 'application/json',
             }
+            #print(listaCanteiro_json) ###########
+            print("Sending data:", json.dumps(canteiro_data, indent=2)) 
+            
             # Send POST request to external API
             response = requests.post(
                 API_CANTEIRO_URL,
-                json=listaCanteiro_json,
+                json=canteiro_data,
                 headers=headers
             )
-            
+
             logger.debug(f"Canteiro montado: '{listaCanteiro}'")
-            # Return the external API's response
-            #return jsonify({
-            #    'status': 'success',
-            #    'external_api_status_code': response.status_code,
-            #    'response_data': response.json()
-            #}), response.status_code
 
 
             data_canteiro = response.json()
