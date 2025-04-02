@@ -29,8 +29,7 @@ class ListagemCanteiroSchema(BaseModel):
     """
     canteiro:List[PlantaCanteiroSchema]
 
-
-def apresenta_canteiro(plantas_canteiro: tuple[(Planta, Estrato)]):
+def monta_canteiro(plantas_canteiro: tuple[(Planta, Estrato)]):
     """ Retorna uma representação de um canteiro com as plantas e seus estratos.
     """
     result = []
@@ -42,6 +41,23 @@ def apresenta_canteiro(plantas_canteiro: tuple[(Planta, Estrato)]):
             "estrato": planta.estrato,
             "sombra": estrato.porcentagem_sombra,
             "espacamento": planta.espacamento,
+        })
+
+    return {"plantas": result}
+
+def apresenta_canteiro(plantas_canteiro: tuple[(Planta, Estrato)], dados_grafico):
+    """ Retorna uma representação de um canteiro com as plantas e seus estratos.
+    """
+    result = []
+    for info in plantas_canteiro:
+        planta, estrato = info
+        result.append({
+            "nome_planta": planta.nome_planta,
+            "tempo_colheita": planta.tempo_colheita,
+            "estrato": planta.estrato,
+            "sombra": estrato.porcentagem_sombra,
+            "espacamento": planta.espacamento,
+            "dados_grafico_planta": dados_grafico[planta.estrato]
         })
 
     return {"plantas": result}

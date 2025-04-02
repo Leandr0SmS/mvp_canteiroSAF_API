@@ -178,7 +178,7 @@ def get_planta(query: CanteiroBuscaSchema):
                 "nome_canteiro": "Canteiro_Meu_Canteiro",
                 "x_canteiro": 800,
                 "y_canteiro": 200,
-                "plantas_canteiro": apresenta_canteiro(listaCanteiro)
+                "plantas_canteiro": monta_canteiro(listaCanteiro)
             }
             
             print(canteiro_data)
@@ -205,7 +205,7 @@ def get_planta(query: CanteiroBuscaSchema):
             
             logger.debug(f"Canteiro montado: '{listaCanteiro}'")
             # retorna a representação da planta
-            return apresenta_canteiro(listaCanteiro), 200
+            return apresenta_canteiro(listaCanteiro, data_canteiro), 200
 
             #except requests.exceptions.RequestException as e:
             #    logger.warning(f"Erro ao plotar o canteiro '{listaCanteiro}', {error_msg}")
