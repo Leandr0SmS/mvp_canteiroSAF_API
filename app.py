@@ -175,13 +175,12 @@ def get_planta(query: CanteiroBuscaSchema):
             #try:
             #listaCanteiro_json = json.dumps(apresenta_canteiro(listaCanteiro))
             canteiro_data_init = {
-                "nome_canteiro": "Canteiro_Meu_Canteiro",
-                "x_canteiro": 1000,
-                "y_canteiro": 300,
+                "nome_canteiro": query.nome_canteiro,
+                "x_canteiro": query.x_canteiro,
+                "y_canteiro": query.y_canteiro,
                 "plantas_canteiro": monta_canteiro(listaCanteiro)
             }
             
-            print(canteiro_data_init)
             
             headers = {
                 'Content-Type': 'application/json',
@@ -208,9 +207,9 @@ def get_planta(query: CanteiroBuscaSchema):
             return apresenta_canteiro(
                 listaCanteiro, 
                 data_canteiro,
-                canteiro_data_init["nome_canteiro"],
-                canteiro_data_init["x_canteiro"],
-                canteiro_data_init["y_canteiro"]
+                query.nome_canteiro,
+                query.x_canteiro,
+                query.y_canteiro
                 ), 200
 
             #except requests.exceptions.RequestException as e:

@@ -8,6 +8,9 @@ class CanteiroBuscaSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será
         com base no nome das plantas.
     """
+    nome_canteiro: str = "Canteiro_Meu_Canteiro"
+    x_canteiro: int = 800
+    y_canteiro: int = 300
     id_planta_emergente: str = "11"
     id_planta_alto: str = "22"
     id_planta_medio: str = "18"
