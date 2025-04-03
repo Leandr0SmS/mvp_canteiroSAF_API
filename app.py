@@ -174,25 +174,25 @@ def get_planta(query: CanteiroBuscaSchema):
 
             #try:
             #listaCanteiro_json = json.dumps(apresenta_canteiro(listaCanteiro))
-            canteiro_data = {
+            canteiro_data_init = {
                 "nome_canteiro": "Canteiro_Meu_Canteiro",
-                "x_canteiro": 800,
-                "y_canteiro": 200,
+                "x_canteiro": 1000,
+                "y_canteiro": 300,
                 "plantas_canteiro": monta_canteiro(listaCanteiro)
             }
             
-            print(canteiro_data)
+            print(canteiro_data_init)
             
             headers = {
                 'Content-Type': 'application/json',
             }
             #print(listaCanteiro_json) ###########
-            print("Sending data:", json.dumps(canteiro_data, indent=2)) 
+            print("Sending data:", json.dumps(canteiro_data_init, indent=2)) 
             
             # Send POST request to external API
             response = requests.post(
                 API_CANTEIRO_URL,
-                json=canteiro_data,
+                json=canteiro_data_init,
                 headers=headers
             )
 
@@ -200,12 +200,18 @@ def get_planta(query: CanteiroBuscaSchema):
 
 
             data_canteiro = response.json()
+            print("-------data_canteiro: ", data_canteiro)
             #canteiro_plot = data_canteiro.plantas_canteiro
-            print("----------------", data_canteiro)
             
             logger.debug(f"Canteiro montado: '{listaCanteiro}'")
             # retorna a representação da planta
-            return apresenta_canteiro(listaCanteiro, data_canteiro), 200
+            return apresenta_canteiro(
+                listaCanteiro, 
+                data_canteiro,
+                canteiro_data_init["nome_canteiro"],
+                canteiro_data_init["x_canteiro"],
+                canteiro_data_init["y_canteiro"]
+                ), 200
 
             #except requests.exceptions.RequestException as e:
             #    logger.warning(f"Erro ao plotar o canteiro '{listaCanteiro}', {error_msg}")

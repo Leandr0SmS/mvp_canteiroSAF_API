@@ -45,7 +45,13 @@ def monta_canteiro(plantas_canteiro: tuple[(Planta, Estrato)]):
 
     return {"plantas": result}
 
-def apresenta_canteiro(plantas_canteiro: tuple[(Planta, Estrato)], dados_grafico):
+def apresenta_canteiro(
+        plantas_canteiro: tuple[(Planta, Estrato)], 
+        dados_grafico,
+        nome_canteiro,
+        x_canteiro,
+        y_canteiro
+        ):
     """ Retorna uma representação de um canteiro com as plantas e seus estratos.
     """
     result = []
@@ -57,7 +63,12 @@ def apresenta_canteiro(plantas_canteiro: tuple[(Planta, Estrato)], dados_grafico
             "estrato": planta.estrato,
             "sombra": estrato.porcentagem_sombra,
             "espacamento": planta.espacamento,
-            "dados_grafico_planta": dados_grafico[planta.estrato]
         })
 
-    return {"plantas": result}
+    return {
+        "plantas": result,
+        "nome_canteiro": nome_canteiro,
+        "x_canteiro": x_canteiro,
+        "y_canteiro": y_canteiro,
+        "dados_grafico": dados_grafico
+        }
