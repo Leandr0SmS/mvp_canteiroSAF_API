@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional, List
 from model.plantas import Planta
-from model.estratos import Estrato
 
 
 class PlantaSchema(BaseModel):

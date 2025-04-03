@@ -75,6 +75,8 @@ def add_planta(form: PlantaSchema):
 def update_planta(form: PlantaUpdateSchema):
     """
         Edita informações de uma Planta a partir do nome informado
+
+        Retorna uma representação da planta.
     """
     
     planta_nome = unquote(unquote(form.nome_planta))
@@ -167,54 +169,43 @@ def get_planta(query: CanteiroBuscaSchema):
 
         if not all(tuple is not None for tuple in listaCanteiro):
             # se a planta não foi encontrada
-            error_msg = "erro na seleção de plantas"
+            error_msg = "erro na seleção de plantas para montar o canteiro"
             logger.warning(f"Erro ao montar canteiro '{listaCanteiro}', {error_msg}")
             return {"mesage": error_msg}, 404
         else:
 
-            #try:
-            #listaCanteiro_json = json.dumps(apresenta_canteiro(listaCanteiro))
-            canteiro_data_init = {
-                "nome_canteiro": query.nome_canteiro,
-                "x_canteiro": query.x_canteiro,
-                "y_canteiro": query.y_canteiro,
-                "plantas_canteiro": monta_canteiro(listaCanteiro)
-            }
-            
-            
-            headers = {
-                'Content-Type': 'application/json',
-            }
-            #print(listaCanteiro_json) ###########
-            print("Sending data:", json.dumps(canteiro_data_init, indent=2)) 
-            
-            # Send POST request to external API
-            response = requests.post(
-                API_CANTEIRO_URL,
-                json=canteiro_data_init,
-                headers=headers
-            )
+            try:
+                # Eviar PUT request
+                canteiro_data_init = {
+                    "nome_canteiro": query.nome_canteiro,
+                    "x_canteiro": query.x_canteiro,
+                    "y_canteiro": query.y_canteiro,
+                    "plantas_canteiro": monta_canteiro(listaCanteiro)
+                }
 
-            logger.debug(f"Canteiro montado: '{listaCanteiro}'")
+                headers = {
+                    'Content-Type': 'application/json',
+                }
+                response = requests.put(
+                    API_CANTEIRO_URL,
+                    json=canteiro_data_init,
+                    headers=headers
+                )
+                data_canteiro = response.json()
 
+                # retorna a representação da planta
+                logger.debug(f"Canteiro montado: '{listaCanteiro}'")
+                return apresenta_canteiro(
+                    listaCanteiro, 
+                    data_canteiro,
+                    query.nome_canteiro,
+                    query.x_canteiro,
+                    query.y_canteiro
+                    ), 200
 
-            data_canteiro = response.json()
-            print("-------data_canteiro: ", data_canteiro)
-            #canteiro_plot = data_canteiro.plantas_canteiro
-            
-            logger.debug(f"Canteiro montado: '{listaCanteiro}'")
-            # retorna a representação da planta
-            return apresenta_canteiro(
-                listaCanteiro, 
-                data_canteiro,
-                query.nome_canteiro,
-                query.x_canteiro,
-                query.y_canteiro
-                ), 200
-
-            #except requests.exceptions.RequestException as e:
-            #    logger.warning(f"Erro ao plotar o canteiro '{listaCanteiro}', {error_msg}")
-            #    return {"mesage": error_msg}, 404
+            except requests.exceptions.RequestException as e:
+                logger.warning(f"Erro ao plotar o canteiro '{listaCanteiro}', {error_msg}")
+                return {"mesage": error_msg}, 404
 
 
 

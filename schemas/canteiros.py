@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, List
+from typing import List
 from model.plantas import Planta
 from model.estratos import Estrato
 
@@ -8,7 +8,7 @@ class CanteiroBuscaSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será
         com base no nome das plantas.
     """
-    nome_canteiro: str = "Canteiro_Meu_Canteiro"
+    nome_canteiro: str = "Meu Canteiro"
     x_canteiro: int = 800
     y_canteiro: int = 300
     id_planta_emergente: str = "11"
