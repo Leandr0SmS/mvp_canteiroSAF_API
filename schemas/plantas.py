@@ -1,6 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from typing import Optional, List
 from model.plantas import Planta
+
+estratos_validos = ["baixo", "medio", "alto", "emergente"]
 
 
 class PlantaSchema(BaseModel):
@@ -40,9 +42,27 @@ class PlantaUpdateSchema(BaseModel):
     """ Define como uma nova planta a ser editada deve ser representada
     """
     nome_planta: str = "Bananeira Prata"
-    tempo_colheita: Optional[int] = 300
-    estrato: Optional[str] = "medio"
-    espacamento: Optional[float] = 2
+    tempo_colheita: Optional[int] = None #300
+    estrato: Optional[str] = None #"medio"
+    espacamento: Optional[float] = None #2
+    
+    @field_validator("tempo_colheita", "espacamento", mode="before")
+    @classmethod
+    def validate_number(cls, value):
+        if isinstance(value, (int, float)): 
+            return value
+        try:
+            return int(value) if "." not in str(value) else float(value)  # Convert valid strings to numbers
+        except (ValueError, TypeError):
+            return None 
+    
+    @field_validator("estrato", mode="before")
+    @classmethod
+    def validate_estrato(cls, value):
+        """ Estrato deve ser estratos valido, se não retorna None """
+        if isinstance(value, str) and value.lower() in estratos_validos:
+            return value.lower()
+        return None
     
     
 class ListagemPlantasSchema(BaseModel):
