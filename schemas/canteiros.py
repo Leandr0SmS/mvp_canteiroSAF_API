@@ -11,10 +11,10 @@ class CanteiroBuscaSchema(BaseModel):
     nome_canteiro: str = "Meu Canteiro"
     x_canteiro: int = 800
     y_canteiro: int = 300
-    id_planta_emergente: str = "11"
-    id_planta_alto: str = "22"
-    id_planta_medio: str = "18"
-    id_planta_baixo: str = "03"
+    id_planta_emergente: int = 11
+    id_planta_alto: int = 22
+    id_planta_medio: int = 18
+    id_planta_baixo: int = 3
 
  
 class PlantaCanteiroSchema(BaseModel):
