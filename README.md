@@ -51,14 +51,19 @@ Certifique-se de ter o [Docker](https://docs.docker.com/engine/install/) instala
 Navegue até o diretório que contém o Dockerfile e o requirements.txt no terminal.
 Execute **como administrador** o seguinte comando para construir a imagem Docker:
 
+Criar uma rede:
 ```
-$ docker build -t meu_canteiro_api .
+docker network create my_network
+```
+
+Construir a Imagem:
+```
+$ docker build --no-cache -t meu_canteiro_api .
 ```
 
 Uma vez criada a imagem, para executar o container basta executar, **como administrador**, seguinte o comando:
-
 ```
-$ docker run -p 5000:5000 meu_canteiro_api
+docker run --name meu_canteiro_api --network my_network -p 5000:5000 meu_canteiro_api
 ```
 
 Uma vez executando, para acessar a API, basta abrir o [http://localhost:5000/#/](http://localhost:5000/#/) no navegador.

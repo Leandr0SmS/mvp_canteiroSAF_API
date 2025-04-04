@@ -20,7 +20,7 @@ app = OpenAPI(__name__, info=info)
 CORS(app)
 
 # Example API configuration (replace with your API details)
-API_CANTEIRO_URL = "http://127.0.0.1:5001/canteiro"
+API_CANTEIRO_URL = "http://agroforestry_systems_design:5001/canteiro"
 
 # definindo tags
 home_tag = Tag(name="Documentação", description="Seleção de documentação: Swagger, Redoc ou RapiDoc")
