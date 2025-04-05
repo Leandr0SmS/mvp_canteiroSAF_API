@@ -19,8 +19,10 @@ API implementada em Python e Flask com 3 rotas:
 ## Executar
 
 - [Localmente com Python, venv e pip](#localmente-com-python)
-- [Replit](#replit)
 - [Docker](#executar-com-docker)
+- [Replit](#replit)
+
+> **Banco de Dados** - Será iniciado e carregado com informações pré definidas.
 
 ### Localmente com Python
 
@@ -39,10 +41,6 @@ Executar o app com o comando:
 ```
 (env)$ flask run --host 0.0.0.0 --port 5000
 ```
-
-### Replit:
-
-[[Run on Replit: https://replit.com/@Leandr0SmS/pucrio-mvp1-backend?v=1]](https://replit.com/@Leandr0SmS/pucrio-mvp1-backend?v=1)
 
 ### Executar com Docker
 
@@ -114,7 +112,9 @@ Uma vez executando, para acessar a API, basta abrir o [http://localhost:5000/#/]
 >```
 >Para mais comandos, veja a [documentação do docker](https://docs.docker.com/engine/reference/run/).
 
-> **Banco de Dados** - Será iniciado e carregado com informações pré definidas.
+### Replit:
+
+[[Run on Replit: https://replit.com/@Leandr0SmS/pucrio-mvp1-backend?v=1]](https://replit.com/@Leandr0SmS/pucrio-mvp1-backend?v=1)
 
 ## Autor
 
