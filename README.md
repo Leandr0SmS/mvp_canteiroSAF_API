@@ -8,6 +8,11 @@ O projeto permite ao usuário:
 - Inserir/Excluir espécies do banco de dados;
 - Selecionar uma espécie por estrato para criar um canteiro apresentando informações pertinentes para realizar o planejamento, manejo e colheita do SAF;
 
+### Arquitetura
+
+![Arquitetura Meu Canteiro SAF](https://github.com/Leandr0SmS/mvp_canteiroSAF_frontend/blob/main/resources/images/Meu_canteiro_Flowchart.png)
+
+
 ## Descrição
 
 API implementada em Python e Flask com 3 rotas:
