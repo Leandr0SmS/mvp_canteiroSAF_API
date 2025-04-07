@@ -1,120 +1,101 @@
 # MVP Canteiro SAF - API
 
-Este projeto busca auxiliar no planejamento de sistemas agroflorestais (SAF) que combinem espécies vegetais de diferentes estratos verticais.  
-A seleção das espécies que irão compor um SAF é de grande importância para sua eficiência.
+O projeto **Canteiro SAF** é uma API RESTful desenvolvida para apoiar o planejamento de Sistemas Agroflorestais (SAFs), facilitando a seleção e organização de espécies vegetais conforme seus respectivos estratos. A escolha adequada das espécies é fundamental para maximizar a eficiência ecológica, produtiva e o manejo sustentável do SAF.
 
-O projeto permite ao usuário:
+## Funcionalidades
 
-- Inserir/Excluir espécies do banco de dados;
-- Selecionar uma espécie por estrato para criar um canteiro apresentando informações pertinentes para realizar o planejamento, manejo e colheita do SAF;
+A API oferece operações básicas para o gerenciamento de espécies e geração de canteiros agroflorestais. As principais funcionalidades incluem:
 
-## Descrição
+- Cadastro e remoção de espécies do banco de dados;
+- Criação de um canteiro SAF com espécies organizadas por estrato;
+- Retorno de informações úteis para planejamento, manejo e colheita.
 
-API implementada em Python e Flask com 3 rotas:
+## Tecnologias Utilizadas
 
-- `/planta` => Adiciona ou remove uma nova Planta à base de dados. Retorna uma representação da planta adicionada ou o nome da planta deletada.
-- `/plantas` => Faz a busca por todas as Plantas cadastradas. Retorna uma representação da listagem de plantas.
-- `/canteiro` => Faz a busca das plantas selecionadas de um canteiro a partir da nome de cada planta. Retorna uma representação do canteiro de um SAF.
+- **Linguagem:** Python 3.x  
+- **Framework:** Flask  
+- **Formato de Resposta:** JSON  
+- **Padrão de API:** RESTful
 
-## Executar
+## Endpoints
 
-- [Localmente com Python, venv e pip](#localmente-com-python)
-- [Replit](#replit)
-- [Docker](#executar-com-docker)
+| Método | Rota        | Descrição                                                                 |
+|--------|-------------|---------------------------------------------------------------------------|
+| POST   | `/planta`   | Adiciona uma nova espécie ao banco de dados.                             |
+| DELETE | `/planta`   | Remove uma espécie existente a partir do nome.                           |
+| GET    | `/plantas`  | Retorna todas as espécies cadastradas.                                   |
+| GET    | `/canteiro` | Gera um canteiro com uma espécie selecionada para cada estrato vegetal. |
 
-### Localmente com Python
+Todas as rotas utilizam formato JSON para envio e recebimento de dados. Em caso de erro, são retornadas mensagens padronizadas com os códigos HTTP correspondentes.
 
-Certifique-se de ter o [python](https://www.python.org/) instalado.
+---
 
-Inicializar [virtual environments](https://docs.python.org/3/library/venv.html).
+## Execução da Aplicação
 
-Instalar dependências:
+A aplicação pode ser executada em diferentes ambientes. Abaixo estão descritas as opções de execução com instruções específicas.
 
-```
-(env)$ pip install -r requirements.txt
-```
+- [Ambiente local com Python, venv e pip](#execução-local-com-python)
+- [Ambiente containerizado com Docker](#execução-com-docker)
 
-Executar o app com o comando:
+---
 
-```
-(env)$ flask run --host 0.0.0.0 --port 5000
-```
+### Execução Local com Python
 
-### Replit:
+**Pré-requisitos:**
 
-[[Run on Replit: https://replit.com/@Leandr0SmS/pucrio-mvp1-backend?v=1]](https://replit.com/@Leandr0SmS/pucrio-mvp1-backend?v=1)
+- Python 3.8+ instalado ([Download](https://www.python.org/downloads/))
+- `pip` instalado e configurado
+- `venv` disponível (nativo a partir do Python 3.3)
 
-### Executar com Docker
+**Passos:**
 
-Certifique-se de ter o [Docker](https://docs.docker.com/engine/install/) instalado e em execução em sua máquina.
+1. Criar e ativar um ambiente virtual:
 
-Navegue até o diretório que contém o Dockerfile e o requirements.txt no terminal.
-Execute **como administrador** o seguinte comando para construir a imagem Docker:
+   ```bash
+   python -m venv env
+   source env/bin/activate  # Linux/macOS
+   .\env\Scripts\activate   # Windows
 
-Criar uma rede:
-```
-docker network create my_network
-```
+2. Instalar dependências:
 
-Construir a Imagem:
-```
-$ docker build --no-cache -t meu_canteiro_api .
-```
+   ```bash
+   (env)$ pip install -r requirements.txt
 
-Uma vez criada a imagem, para executar o container basta executar, **como administrador**, seguinte o comando:
-```
-docker run --name meu_canteiro_api --network my_network -p 5000:5000 meu_canteiro_api
-```
+3. Executar a aplicação Flask:
 
-Uma vez executando, para acessar a API, basta abrir o [http://localhost:5000/#/](http://localhost:5000/#/) no navegador.
+   ```bash
+   (env)$ flask run --host 0.0.0.0 --port 5000
 
-### Alguns comandos úteis do Docker
+A API estará disponível em: [http://localhost:5000](http://localhost:5000)
 
->**Para verificar se a imagem foi criada** você pode executar o seguinte comando:
->
->```
->$ docker images
->```
->
-> Caso queira **remover uma imagem**, basta executar o comando:
->```
->$ docker rmi <IMAGE ID>
->```
->Subistituindo o `IMAGE ID` pelo código da imagem
->
-> Caso queira **remover todas as images**, basta executar o comando:
->```
->$ docker rmi -f $(docker images -aq)
->```
->
->**Para verificar se o container está em exceução** você pode executar o seguinte comando:
->
->```
->$ docker container ls --all
->```
->
-> Caso queira **parar um conatiner**, basta executar o comando:
->```
->$ docker stop <CONTAINER ID>
->```
->Subistituindo o `CONTAINER ID` pelo ID do conatiner
->
-> Caso queira **parar todos os conatiner**, basta executar o comando:
->```
->$ docker stop $(docker ps -a -q)
->```
->
-> Caso queira **destruir um conatiner**, basta executar o comando:
->```
->$ docker rm <CONTAINER ID>
->```
-> Caso queira **destruir todos os conatiners**, basta executar o comando:
->```
->$ docker rm $(docker ps -a -q)
->```
->Para mais comandos, veja a [documentação do docker](https://docs.docker.com/engine/reference/run/).
+### Execução com Docker
 
-> **Banco de Dados** - Será iniciado e carregado com informações pré definidas.
+**Pré-requisitos:**
+
+- [Docker Engine](https://docs.docker.com/engine/install/) instalado e em execução
+- Permissões administrativas para build e execução de containers
+
+**Passos:**
+
+1. Criar uma rede Docker (opcional, mas recomendável para futuras integrações entre serviços):
+
+   ```Docker CLI
+   docker network create my_network
+
+
+2. Construir a imagem Docker a partir do `Dockerfile` localizado no diretório raiz do projeto:
+
+   ```Docker CLI
+   docker build --no-cache -t meu_canteiro_api .
+
+
+3. Executar o container com a imagem criada:
+
+   ```Docker CLI
+   docker run --name meu_canteiro_api --network my_network -p 5000:5000 meu_canteiro_api
+
+
+A API estará acessível em: [http://localhost:5000/#/](http://localhost:5000/#/)
 
 ## Autor
 
