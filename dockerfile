@@ -10,6 +10,9 @@ COPY requirements.txt .
 # Instala as dependências do projeto
 RUN pip install --no-cache-dir -r requirements.txt
 
+#Adiciona ENV para agroforestry_systems_design API
+ENV API_CANTEIRO_URL=http://agroforestry_systems_design:5001/canteiro
+
 # Copia o código-fonte para o diretório de trabalho
 COPY . .
 

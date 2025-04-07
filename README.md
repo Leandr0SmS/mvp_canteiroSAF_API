@@ -84,7 +84,7 @@ A API estará disponível em: [http://localhost:5000](http://localhost:5000)
 1. Criar uma rede Docker (opcional, mas recomendável para futuras integrações entre serviços):
 
    ```Docker CLI
-   docker network create my_network
+   docker network create canteiro_network
 
 
 2. Construir a imagem Docker a partir do `Dockerfile` localizado no diretório raiz do projeto:
@@ -96,7 +96,7 @@ A API estará disponível em: [http://localhost:5000](http://localhost:5000)
 3. Executar o container com a imagem criada:
 
    ```Docker CLI
-   docker run --name meu_canteiro_api --network my_network -p 5000:5000 meu_canteiro_api
+   docker run --name meu_canteiro_api --network canteiro_network -p 5000:5000 meu_canteiro_api
 
 
 A API estará acessível em: [http://localhost:5000/#/](http://localhost:5000/#/)

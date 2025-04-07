@@ -19,8 +19,8 @@ info = Info(title="Minha API", version="1.0.0")
 app = OpenAPI(__name__, info=info)
 CORS(app)
 
-# Example API configuration (replace with your API details)
-API_CANTEIRO_URL = "http://agroforestry_systems_design:5001/canteiro"
+# API ENV
+API_CANTEIRO_URL = os.getenv("API_CANTEIRO_URL", "http://localhost:5001/canteiro")
 
 # definindo tags
 home_tag = Tag(name="Documentação", description="Seleção de documentação: Swagger, Redoc ou RapiDoc")
