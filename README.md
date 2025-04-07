@@ -2,6 +2,10 @@
 
 O projeto **Canteiro SAF** é uma API RESTful desenvolvida para apoiar o planejamento de Sistemas Agroflorestais (SAFs), facilitando a seleção e organização de espécies vegetais conforme seus respectivos estratos. A escolha adequada das espécies é fundamental para maximizar a eficiência ecológica, produtiva e o manejo sustentável do SAF.
 
+## Arquitetura
+
+![Arquitetura Meu Canteiro SAF](https://github.com/Leandr0SmS/mvp_canteiroSAF_frontend/blob/main/resources/images/Meu_canteiro_Flowchart.png)
+
 ## Funcionalidades
 
 A API oferece operações básicas para o gerenciamento de espécies e geração de canteiros agroflorestais. As principais funcionalidades incluem:
