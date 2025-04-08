@@ -1,5 +1,4 @@
 from sqlalchemy import Column, String, Integer, Float, ForeignKey
-from typing import Union
 
 from  model import Base
 

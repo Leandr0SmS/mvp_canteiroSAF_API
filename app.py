@@ -1,9 +1,8 @@
 from flask_openapi3 import OpenAPI, Info, Tag
-from flask import redirect, jsonify
+from flask import redirect
 from urllib.parse import unquote
 
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import update
 
 from model import Session, Planta, Estrato
 from schemas import *
@@ -12,8 +11,7 @@ from flask_cors import CORS
 
 import requests
 import os
-from dotenv import load_dotenv 
-import json
+
 
 info = Info(title="Minha API", version="1.0.0")
 app = OpenAPI(__name__, info=info)
