@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 from model.plantas import Planta
 from model.estratos import Estrato
 
@@ -75,6 +75,45 @@ class CanteiroBuscaSchema(BaseModel):
     id_planta_alto: int = 22
     id_planta_medio: int = 18
     id_planta_baixo: int = 3
+
+class CanteiroUpdateSchema(BaseModel):
+    """ Define como um canteiro deve ser editado
+    """
+    nome_canteiro: str = "Canteiro1"
+    x_canteiro: Optional[int] = 1100
+    y_canteiro: Optional[int] = 250
+    plantas_canteiro: Optional[dict] = {
+        "plantas": [
+            {
+              "espacamento": 200,
+              "estrato": "emergente",
+              "nome_planta": "Embaúba",
+              "sombra": 20,
+              "tempo_colheita": 1095
+            },
+            {
+              "espacamento": 100,
+              "estrato": "alto",
+              "nome_planta": "Jucara",
+              "sombra": 40,
+              "tempo_colheita": 2555
+            },
+            {
+              "espacamento": 50,
+              "estrato": "medio",
+              "nome_planta": "Pimenta-do-reino",
+              "sombra": 60,
+              "tempo_colheita": 1460
+            },
+            {
+              "espacamento": 40,
+              "estrato": "baixo",
+              "nome_planta": "Abacaxi",
+              "sombra": 80,
+              "tempo_colheita": 730
+            }
+        ]
+    }
 
  
 class PlantaCanteiroSchema(BaseModel):

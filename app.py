@@ -282,3 +282,31 @@ def listar_canteiros():
     except requests.exceptions.RequestException as e:
         logger.error(f"Erro de comunicação com a API de canteiros: {str(e)}")
         return {"message": "Erro de comunicação com a API de canteiros"}, 500
+    
+@app.post('/canteiro', tags=[canteiro_tag],
+          responses={"200": CanteiroUpdateSchema, "400": ErrorSchema, "404": ErrorSchema, "409": ErrorSchema})
+def editar_canteiro(form: CanteiroUpdateSchema):
+    """
+    Encaminha requisição de edição de um canteiro para a API secundária.
+    """
+    try:
+        print(form)
+        headers = {"Content-Type": "application/json"}
+        response = requests.post(
+            f"{API_CANTEIRO_URL}/canteiro",
+            json=form.model_dump(),
+            headers=headers
+        )
+
+        if response.status_code == 200:
+            return response.json(), 200
+        elif response.status_code == 404:
+            return {"message": "Canteiro não encontrado"}, 404
+        elif response.status_code == 409:
+            return {"message": "Conflito ao editar o canteiro"}, 409
+        else:
+            return {"message": "Erro ao editar canteiro"}, response.status_code
+
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erro ao comunicar com API de canteiro: {str(e)}")
+        return {"message": "Erro interno ao tentar editar canteiro"}, 500
