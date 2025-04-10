@@ -3,7 +3,6 @@ from flask import redirect, jsonify
 from urllib.parse import unquote
 
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy import update
 
 from model import Session, Planta, Estrato
 from schemas import *
@@ -12,8 +11,6 @@ from flask_cors import CORS
 
 import requests
 import os
-from dotenv import load_dotenv 
-import json
 
 info = Info(title="Minha API", version="1.0.0")
 app = OpenAPI(__name__, info=info)
@@ -193,18 +190,20 @@ def get_planta(query: CanteiroBuscaSchema):
                 )
                 data_canteiro = response.json()
 
-                # retorna a representação da planta
-                logger.debug(f"Canteiro montado: '{listaCanteiro}'")
+                print("data!!!! ------> ", data_canteiro)
+
+                # retorna a representação do canteiro
+                logger.debug(f"Canteiro montado: '{query.nome_canteiro}'")
                 return apresenta_canteiro(
+                    data_canteiro['nome_canteiro'],
+                    data_canteiro['x_canteiro'],
+                    data_canteiro['y_canteiro'],
                     listaCanteiro, 
-                    data_canteiro,
-                    query.nome_canteiro,
-                    query.x_canteiro,
-                    query.y_canteiro
+                    data_canteiro['plantas_destribuidas'],
                     ), 200
 
             except requests.exceptions.RequestException as e:
-                logger.warning(f"Erro ao plotar o canteiro '{listaCanteiro}', {error_msg}")
+                logger.warning(f"Erro ao plotar o canteiro '{query.nome_canteiro}', {error_msg}")
                 return {"mesage": error_msg}, 404
 
 
