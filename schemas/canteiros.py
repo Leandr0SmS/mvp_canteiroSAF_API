@@ -3,6 +3,60 @@ from typing import List
 from model.plantas import Planta
 from model.estratos import Estrato
 
+class PlantaSchema(BaseModel):
+    espacamento: int
+    estrato: str
+    nome_planta: str
+    sombra: int
+    tempo_colheita: int
+
+class PlantasCanteiroSchema(BaseModel):
+    plantas: List[PlantaSchema] =  [
+            {
+              "espacamento": 200,
+              "estrato": "emergente",
+              "nome_planta": "Embaúba",
+              "sombra": 20,
+              "tempo_colheita": 1095
+            },
+            {
+              "espacamento": 100,
+              "estrato": "alto",
+              "nome_planta": "Jucara",
+              "sombra": 40,
+              "tempo_colheita": 2555
+            },
+            {
+              "espacamento": 50,
+              "estrato": "medio",
+              "nome_planta": "Pimenta-do-reino",
+              "sombra": 60,
+              "tempo_colheita": 1460
+            },
+            {
+              "espacamento": 40,
+              "estrato": "baixo",
+              "nome_planta": "Abacaxi",
+              "sombra": 80,
+              "tempo_colheita": 730
+            }
+        ]
+
+class CanteiroSchema(BaseModel):
+    """ Define como um novo canteiro deve ser representado
+    """
+    nome_canteiro: str = "Canteiro1"
+    x_canteiro: int = 800
+    y_canteiro: int = 200
+    plantas_canteiro: PlantasCanteiroSchema
+
+
+class ListagemCanteirosSchema(BaseModel):
+    """ Define como uma listagem dos Canteiro será retornada.
+    """
+    plantas:List[CanteiroSchema]
+
+
 class CanteiroDeleteSchema(BaseModel):
     """ Define como deve ser a estrutura que deleta o canteiro. Que será
         com base no nome das plantas.
@@ -37,6 +91,7 @@ class ListagemCanteiroSchema(BaseModel):
     """ Define como uma listagem de plantas será retornada.
     """
     canteiro:List[PlantaCanteiroSchema]
+
 
 def monta_canteiro(plantas_canteiro: tuple[(Planta, Estrato)]):
     """ Retorna uma representação de um canteiro com as plantas e seus estratos.

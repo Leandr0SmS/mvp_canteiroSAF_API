@@ -17,7 +17,7 @@ app = OpenAPI(__name__, info=info)
 CORS(app)
 
 # API ENV
-API_CANTEIRO_URL = os.getenv("API_CANTEIRO_URL", "http://localhost:5001/canteiro")
+API_CANTEIRO_URL = os.getenv("API_CANTEIRO_URL", "http://localhost:5001")
 
 # definindo tags
 home_tag = Tag(name="Documentação", description="Seleção de documentação: Swagger, Redoc ou RapiDoc")
@@ -208,7 +208,7 @@ def get_planta(query: CanteiroBuscaSchema):
                     'Content-Type': 'application/json',
                 }
                 response = requests.put(
-                    API_CANTEIRO_URL,
+                    f"{API_CANTEIRO_URL}/canteiro",
                     json=canteiro_data_init,
                     headers=headers
                 )
@@ -228,7 +228,7 @@ def get_planta(query: CanteiroBuscaSchema):
                 logger.warning(f"Erro ao plotar o canteiro '{query.nome_canteiro}', {error_msg}")
                 return {"mesage": error_msg}, 404
             
-@app.delete('/canteiro', tags=[canteiro_tag],
+@app.delete('/canteiros', tags=[canteiro_tag],
             responses={"200": CanteiroDeleteSchema, "404": ErrorSchema})
 def del_canteiro(query: CanteiroDeleteSchema):
     """
@@ -242,7 +242,7 @@ def del_canteiro(query: CanteiroDeleteSchema):
             'Content-Type': 'application/json',
         }
         response = requests.delete(
-            API_CANTEIRO_URL,
+            f"{API_CANTEIRO_URL}/canteiro",
             params={"nome_canteiro": canteiro_nome},  # Usa como query param
             headers=headers
         )
@@ -259,3 +259,26 @@ def del_canteiro(query: CanteiroDeleteSchema):
     except Exception as e:
         logger.error(f"Erro ao deletar canteiro '{canteiro_nome}': {str(e)}")
         return {"message": "Erro interno ao deletar canteiro"}, 500
+    
+@app.get("/canteiros", tags=[canteiro_tag],
+         responses={"200": ListagemCanteirosSchema, "500": ErrorSchema})
+def listar_canteiros():
+    """
+    Encaminha a requisição para a API secundária para listar todos os canteiros.
+    
+    Retorna uma lista com todos os canteiros cadastrados.
+    """
+    try:
+        response = requests.get(f"{API_CANTEIRO_URL}/canteiros")
+        
+        if response.status_code == 200:
+            return response.json(), 200
+        else:
+            return {
+                "message": "Erro ao buscar canteiros na API de canteiros",
+                "detalhe": response.text
+            }, response.status_code
+
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erro de comunicação com a API de canteiros: {str(e)}")
+        return {"message": "Erro de comunicação com a API de canteiros"}, 500

@@ -3,6 +3,9 @@ from schemas.plantas import PlantaSchema, PlantaBuscaSchema, PlantaViewSchema, \
                             apresenta_planta, apresenta_plantas
                             
 from schemas.canteiros import CanteiroBuscaSchema, PlantaCanteiroSchema, \
-                            ListagemCanteiroSchema, CanteiroDeleteSchema, apresenta_canteiro, monta_canteiro
+                            ListagemCanteiroSchema, ListagemCanteirosSchema, \
+                            CanteiroDeleteSchema, apresenta_canteiro, monta_canteiro, \
+                            PlantaSchema, PlantasCanteiroSchema, CanteiroSchema
+
                             
 from schemas.error import ErrorSchema
