@@ -3,6 +3,12 @@ from typing import List
 from model.plantas import Planta
 from model.estratos import Estrato
 
+class CanteiroDeleteSchema(BaseModel):
+    """ Define como deve ser a estrutura que deleta o canteiro. Que será
+        com base no nome das plantas.
+    """
+    nome_canteiro: str = "Canteiro1"
+
 
 class CanteiroBuscaSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será

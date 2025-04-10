@@ -124,6 +124,30 @@ def get_plantas():
             return apresenta_plantas(plantas), 200
 
 
+@app.delete('/planta', tags=[planta_tag],
+            responses={"200": PlantaDelSchema, "404": ErrorSchema})
+def del_planta(query: PlantaBuscaSchema):
+    """Deleta uma Planta a partir do nome da planta informada
+
+    Retorna uma mensagem de confirmação da remoção.
+    """
+    planta_nome = unquote(unquote(query.nome_planta))
+    logger.debug(f"Deletando dados sobre planta #{planta_nome}")
+    # criando conexão com a base
+    with Session() as session:
+        # fazendo a remoção
+        del_planta = session.query(Planta).filter(Planta.nome_planta == planta_nome).delete()
+        session.commit()
+    if del_planta:
+        # retorna a representação da mensagem de confirmação
+        logger.debug(f"Deletado planta #{planta_nome}")
+        return {"mesage": "Planta removida", "nome_planta": planta_nome}
+    else:
+        # se o planta não foi encontrada
+        error_msg = "Planta não encontrada na base :/"
+        logger.warning(f"Erro ao deletar planta #'{planta_nome}', {error_msg}")
+        return {"message": error_msg}, 404
+    
 @app.get('/canteiro', tags=[canteiro_tag],
          responses={"200": ListagemCanteiroSchema, "404": ErrorSchema})
 def get_planta(query: CanteiroBuscaSchema):
@@ -190,8 +214,6 @@ def get_planta(query: CanteiroBuscaSchema):
                 )
                 data_canteiro = response.json()
 
-                print("data!!!! ------> ", data_canteiro)
-
                 # retorna a representação do canteiro
                 logger.debug(f"Canteiro montado: '{query.nome_canteiro}'")
                 return apresenta_canteiro(
@@ -205,29 +227,35 @@ def get_planta(query: CanteiroBuscaSchema):
             except requests.exceptions.RequestException as e:
                 logger.warning(f"Erro ao plotar o canteiro '{query.nome_canteiro}', {error_msg}")
                 return {"mesage": error_msg}, 404
-
-
-
-@app.delete('/planta', tags=[planta_tag],
-            responses={"200": PlantaDelSchema, "404": ErrorSchema})
-def del_planta(query: PlantaBuscaSchema):
-    """Deleta uma Planta a partir do nome da planta informada
+            
+@app.delete('/canteiro', tags=[canteiro_tag],
+            responses={"200": CanteiroDeleteSchema, "404": ErrorSchema})
+def del_canteiro(query: CanteiroDeleteSchema):
+    """
+    Deleta um Canteiro a partir do nome
 
     Retorna uma mensagem de confirmação da remoção.
     """
-    planta_nome = unquote(unquote(query.nome_planta))
-    logger.debug(f"Deletando dados sobre planta #{planta_nome}")
-    # criando conexão com a base
-    with Session() as session:
-        # fazendo a remoção
-        del_planta = session.query(Planta).filter(Planta.nome_planta == planta_nome).delete()
-        session.commit()
-    if del_planta:
-        # retorna a representação da mensagem de confirmação
-        logger.debug(f"Deletado planta #{planta_nome}")
-        return {"mesage": "Planta removida", "nome_planta": planta_nome}
-    else:
-        # se o planta não foi encontrada
-        error_msg = "Planta não encontrada na base :/"
-        logger.warning(f"Erro ao deletar planta #'{planta_nome}', {error_msg}")
-        return {"message": error_msg}, 404
+    canteiro_nome = unquote(unquote(query.nome_canteiro))
+    try:
+        headers = {
+            'Content-Type': 'application/json',
+        }
+        response = requests.delete(
+            API_CANTEIRO_URL,
+            params={"nome_canteiro": canteiro_nome},  # Usa como query param
+            headers=headers
+        )
+
+        if response.status_code == 200:
+            data = response.json()
+            logger.debug(f"Deletado Canteiro #{canteiro_nome}")
+            return data, 200
+        elif response.status_code == 404:
+            return {"message": "Canteiro não encontrado"}, 404
+        else:
+            return {"message": "Erro ao deletar canteiro"}, response.status_code
+
+    except Exception as e:
+        logger.error(f"Erro ao deletar canteiro '{canteiro_nome}': {str(e)}")
+        return {"message": "Erro interno ao deletar canteiro"}, 500
