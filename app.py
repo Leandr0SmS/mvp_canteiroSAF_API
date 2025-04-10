@@ -148,7 +148,7 @@ def del_planta(query: PlantaBuscaSchema):
         logger.warning(f"Erro ao deletar planta #'{planta_nome}', {error_msg}")
         return {"message": error_msg}, 404
     
-@app.get('/canteiro', tags=[canteiro_tag],
+@app.put('/canteiro', tags=[canteiro_tag],
          responses={"200": ListagemCanteiroSchema, "404": ErrorSchema})
 def get_planta(query: CanteiroBuscaSchema):
     """Faz a busca das plantas selecionadas de um canteiro a partir da nome de cada planta
