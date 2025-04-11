@@ -150,15 +150,15 @@ def del_planta(query: PlantaBuscaSchema):
     
 @app.put('/canteiro', tags=[canteiro_tag],
          responses={"200": ListagemCanteiroSchema, "404": ErrorSchema})
-def get_planta(query: CanteiroBuscaSchema):
+def get_planta(body: CanteiroBuscaSchema):
     """Faz a busca das plantas selecionadas de um canteiro a partir da nome de cada planta
 
     Retorna uma representação do canteiro.
     """
-    id_planta_emergente = query.id_planta_emergente
-    id_planta_alto = query.id_planta_alto
-    id_planta_medio = query.id_planta_medio
-    id_planta_baixo = query.id_planta_baixo
+    id_planta_emergente = body.id_planta_emergente
+    id_planta_alto = body.id_planta_alto
+    id_planta_medio = body.id_planta_medio
+    id_planta_baixo = body.id_planta_baixo
     
     listaCanteiro = []
     logger.debug(f"""Coletando dados para montar canteiro 
@@ -198,12 +198,12 @@ def get_planta(query: CanteiroBuscaSchema):
             try:
                 # Eviar PUT request
                 canteiro_data_init = {
-                    "nome_canteiro": query.nome_canteiro,
-                    "x_canteiro": query.x_canteiro,
-                    "y_canteiro": query.y_canteiro,
+                    "nome_canteiro": body.nome_canteiro,
+                    "x_canteiro": body.x_canteiro,
+                    "y_canteiro": body.y_canteiro,
                     "plantas_canteiro": monta_canteiro(listaCanteiro)
                 }
-
+                
                 headers = {
                     'Content-Type': 'application/json',
                 }
@@ -215,7 +215,7 @@ def get_planta(query: CanteiroBuscaSchema):
                 data_canteiro = response.json()
 
                 # retorna a representação do canteiro
-                logger.debug(f"Canteiro montado: '{query.nome_canteiro}'")
+                logger.debug(f"Canteiro montado: '{body.nome_canteiro}'")
                 return apresenta_canteiro(
                     data_canteiro['nome_canteiro'],
                     data_canteiro['x_canteiro'],
@@ -225,7 +225,7 @@ def get_planta(query: CanteiroBuscaSchema):
                     ), 200
 
             except requests.exceptions.RequestException as e:
-                logger.warning(f"Erro ao plotar o canteiro '{query.nome_canteiro}', {error_msg}")
+                logger.warning(f"Erro ao plotar o canteiro '{body.nome_canteiro}', {error_msg}")
                 return {"mesage": error_msg}, 404
             
 @app.delete('/canteiros', tags=[canteiro_tag],
