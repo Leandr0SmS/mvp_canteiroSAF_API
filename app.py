@@ -149,9 +149,15 @@ def del_planta(query: PlantaBuscaSchema):
         return {"message": error_msg}, 404
     
 @app.put('/canteiro', tags=[canteiro_tag],
-         responses={"200": ListagemCanteiroSchema, "404": ErrorSchema})
+         responses={
+             "200": ListagemCanteiroSchema,
+             "400": ErrorSchema,
+             "404": ErrorSchema,
+             "409": ErrorSchema,
+             "500": ErrorSchema
+         })
 def get_planta(body: CanteiroBuscaSchema):
-    """Faz a busca das plantas selecionadas de um canteiro a partir da nome de cada planta
+    """Faz a busca das plantas selecionadas de um canteiro a partir do nome de cada planta
 
     Retorna uma representação do canteiro.
     """
@@ -167,9 +173,7 @@ def get_planta(body: CanteiroBuscaSchema):
                  #{id_planta_medio}
                  #{id_planta_baixo}
                  """)
-    # criando conexão com a base
     with Session() as session:
-        # fazendo a busca
         planta_emergente = session.query(Planta, Estrato)\
             .join(Estrato, Planta.estrato == Estrato.nome_estrato)\
             .filter(Planta.id_planta == id_planta_emergente).first()
@@ -186,35 +190,30 @@ def get_planta(body: CanteiroBuscaSchema):
             .join(Estrato, Planta.estrato == Estrato.nome_estrato)\
             .filter(Planta.id_planta == id_planta_baixo).first()
         listaCanteiro.append(planta_baixo)
-        session.commit()
 
         if not all(tuple is not None for tuple in listaCanteiro):
-            # se a planta não foi encontrada
             error_msg = "erro na seleção de plantas para montar o canteiro"
             logger.warning(f"Erro ao montar canteiro '{listaCanteiro}', {error_msg}")
-            return {"mesage": error_msg}, 404
-        else:
+            return {"message": error_msg}, 404
 
-            try:
-                # Eviar PUT request
-                canteiro_data_init = {
-                    "nome_canteiro": body.nome_canteiro,
-                    "x_canteiro": body.x_canteiro,
-                    "y_canteiro": body.y_canteiro,
-                    "plantas_canteiro": monta_canteiro(listaCanteiro)
-                }
-                
-                headers = {
-                    'Content-Type': 'application/json',
-                }
-                response = requests.put(
-                    f"{API_CANTEIRO_URL}/canteiro",
-                    json=canteiro_data_init,
-                    headers=headers
-                )
+        try:
+            canteiro_data_init = {
+                "nome_canteiro": body.nome_canteiro,
+                "x_canteiro": body.x_canteiro,
+                "y_canteiro": body.y_canteiro,
+                "plantas_canteiro": monta_canteiro(listaCanteiro)
+            }
+
+            headers = {'Content-Type': 'application/json'}
+
+            response = requests.put(
+                f"{API_CANTEIRO_URL}/canteiro",
+                json=canteiro_data_init,
+                headers=headers
+            )
+
+            if response.status_code == 200:
                 data_canteiro = response.json()
-
-                # retorna a representação do canteiro
                 logger.debug(f"Canteiro montado: '{body.nome_canteiro}'")
                 return apresenta_canteiro(
                     data_canteiro['nome_canteiro'],
@@ -222,12 +221,29 @@ def get_planta(body: CanteiroBuscaSchema):
                     data_canteiro['y_canteiro'],
                     listaCanteiro, 
                     data_canteiro['plantas_destribuidas'],
-                    ), 200
+                ), 200
 
-            except requests.exceptions.RequestException as e:
-                logger.warning(f"Erro ao plotar o canteiro '{body.nome_canteiro}', {error_msg}")
-                return {"mesage": error_msg}, 404
-            
+            elif response.status_code == 409:
+                logger.warning(f"Canteiro duplicado: '{body.nome_canteiro}'")
+                return {"message": "Já existe um canteiro com esse nome."}, 409
+
+            elif response.status_code == 400:
+                logger.warning(f"Erro de validação ao criar canteiro '{body.nome_canteiro}'")
+                return {"message": "Erro ao criar canteiro. Verifique os dados enviados."}, 400
+
+            elif response.status_code == 500:
+                logger.error(f"Erro interno da API secundária ao criar o canteiro '{body.nome_canteiro}'")
+                return {"message": "Erro interno ao criar canteiro."}, 500
+
+            else:
+                logger.error(f"Erro desconhecido ({response.status_code}) ao criar canteiro '{body.nome_canteiro}'")
+                return {"message": "Erro inesperado ao tentar criar o canteiro."}, response.status_code
+
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Erro de comunicação com API secundária: {str(e)}")
+            return {"message": "Erro ao se comunicar com o serviço de canteiros."}, 500
+
+           
 @app.delete('/canteiros', tags=[canteiro_tag],
             responses={"200": CanteiroDeleteSchema, "404": ErrorSchema})
 def del_canteiro(query: CanteiroDeleteSchema):
