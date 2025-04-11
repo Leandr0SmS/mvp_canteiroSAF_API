@@ -156,7 +156,7 @@ def del_planta(query: PlantaBuscaSchema):
              "409": ErrorSchema,
              "500": ErrorSchema
          })
-def get_planta(body: CanteiroBuscaSchema):
+def put_canteiro(body: CanteiroBuscaSchema):
     """Faz a busca das plantas selecionadas de um canteiro a partir do nome de cada planta
 
     Retorna uma representação do canteiro.
@@ -306,7 +306,6 @@ def editar_canteiro(form: CanteiroUpdateSchema):
     Encaminha requisição de edição de um canteiro para a API secundária.
     """
     try:
-        print(form)
         headers = {"Content-Type": "application/json"}
         response = requests.post(
             f"{API_CANTEIRO_URL}/canteiro",

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional
 from model.plantas import Planta
 from model.estratos import Estrato
@@ -11,36 +11,36 @@ class PlantaCanteiroSchema(BaseModel):
     tempo_colheita: int
 
 class PlantasCanteiroSchema(BaseModel):
-    plantas: List[PlantaCanteiroSchema] =  [
-            {
-              "espacamento": 200,
-              "estrato": "emergente",
-              "nome_planta": "Embaúba",
-              "sombra": 20,
-              "tempo_colheita": 1095
-            },
-            {
-              "espacamento": 100,
-              "estrato": "alto",
-              "nome_planta": "Jucara",
-              "sombra": 40,
-              "tempo_colheita": 2555
-            },
-            {
-              "espacamento": 50,
-              "estrato": "medio",
-              "nome_planta": "Pimenta-do-reino",
-              "sombra": 60,
-              "tempo_colheita": 1460
-            },
-            {
-              "espacamento": 40,
-              "estrato": "baixo",
-              "nome_planta": "Abacaxi",
-              "sombra": 80,
-              "tempo_colheita": 730
-            }
-        ]
+    plantas: List[PlantaCanteiroSchema] = Field(default_factory=lambda: [
+        PlantaCanteiroSchema(
+          espacamento=200,
+          estrato="emergente",
+          nome_planta="Embaúba",
+          sombra=20,
+          tempo_colheita=1095
+          ),
+        PlantaCanteiroSchema(
+          espacamento=100,
+          estrato="alto",
+          nome_planta="Jucara",
+          sombra=40,
+          tempo_colheita=2555
+          ),
+        PlantaCanteiroSchema(
+          espacamento=50,
+          estrato="medio",
+          nome_planta="Pimenta-do-reino",
+          sombra=60,
+          tempo_colheita=1460
+          ),
+        PlantaCanteiroSchema(
+          espacamento=40,
+          estrato="baixo",
+          nome_planta="Abacaxi",
+          sombra=80,
+          tempo_colheita=730
+          )
+    ])
 
 class CanteiroSchema(BaseModel):
     """ Define como um novo canteiro deve ser representado
