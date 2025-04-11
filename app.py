@@ -204,8 +204,6 @@ def get_planta(body: CanteiroBuscaSchema):
                     "plantas_canteiro": monta_canteiro(listaCanteiro)
                 }
                 
-                print(canteiro_data_init)
-
                 headers = {
                     'Content-Type': 'application/json',
                 }
