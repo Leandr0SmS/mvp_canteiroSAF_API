@@ -156,8 +156,8 @@ def del_planta(query: PlantaBuscaSchema):
              "409": ErrorSchema,
              "500": ErrorSchema
          })
-def put_canteiro(body: CanteiroBuscaSchema):
-    """Faz a busca das plantas selecionadas de um canteiro a partir do nome de cada planta
+def put_canteiro(body: CanteiroCriaSchema):
+    """Adiciona um canteiro
 
     Retorna uma representação do canteiro.
     """
@@ -275,6 +275,36 @@ def del_canteiro(query: CanteiroDeleteSchema):
     except Exception as e:
         logger.error(f"Erro ao deletar canteiro '{canteiro_nome}': {str(e)}")
         return {"message": "Erro interno ao deletar canteiro"}, 500
+    
+
+@app.get('/canteiro', tags=[canteiro_tag],
+         responses={"200": CanteiroSchemaDestribuido, "404": ErrorSchema, "500": ErrorSchema})
+def obter_canteiro_por_nome(query: CanteiroBuscaSchema):
+    """
+    Recebe o nome do canteiro do frontend, consulta a API de canteiro e repassa a resposta.
+    """
+    nome_canteiro = unquote(unquote(query.nome_canteiro))
+
+    try:
+        response = requests.get(
+            f"{API_CANTEIRO_URL}/canteiro",
+            params={"nome_canteiro": nome_canteiro}
+        )
+
+        if response.status_code == 200:
+            return response.json(), 200
+        elif response.status_code == 404:
+            return {"message": "Canteiro não encontrado"}, 404
+        else:
+            return {
+                "message": "Erro ao buscar canteiro na API secundária",
+                "detalhe": response.text
+            }, response.status_code
+
+    except requests.exceptions.RequestException as e:
+        logger.error(f"Erro ao se comunicar com a API secundária: {str(e)}")
+        return {"message": "Erro interno ao buscar canteiro"}, 500
+    
     
 @app.get("/canteiros", tags=[canteiro_tag],
          responses={"200": ListagemCanteirosSchema, "500": ErrorSchema})

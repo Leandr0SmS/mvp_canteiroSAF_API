@@ -64,7 +64,7 @@ class CanteiroDeleteSchema(BaseModel):
     nome_canteiro: str = "Canteiro1"
 
 
-class CanteiroBuscaSchema(BaseModel):
+class CanteiroCriaSchema(BaseModel):
     """ Define como deve ser a estrutura que representa a busca. Que será
         com base no nome das plantas.
     """
@@ -75,6 +75,12 @@ class CanteiroBuscaSchema(BaseModel):
     id_planta_alto: int = 22
     id_planta_medio: int = 18
     id_planta_baixo: int = 3
+    
+class CanteiroBuscaSchema(BaseModel):
+    """ Define como deve ser a estrutura que representa a busca por nome. Que será
+        feita apenas com base no nome do Canteiro.
+    """
+    nome_canteiro: str = "Canteiro1"
 
 class CanteiroUpdateSchema(BaseModel):
     """ Define como um canteiro deve ser editado
@@ -114,6 +120,84 @@ class CanteiroUpdateSchema(BaseModel):
             }
         ]
     }
+    
+class CanteiroSchemaDestribuido(BaseModel):
+    """ Define como um novo canteiro deve ser representado
+    """
+    nome_canteiro: str = "Canteiro1"
+    x_canteiro: int = 800
+    y_canteiro: int = 200
+    plantas_canteiro: PlantasCanteiroSchema
+    plantas_destribuidas: dict = {
+    "alto": [
+      {
+        "diametro": 100,
+        "estrato": "alto",
+        "nome_planta": "Jucara",
+        "posicao": [
+          114,
+          100
+        ],
+        "tempo_colheita": 2555
+      },
+      {
+        "diametro": 100,
+        "estrato": "alto",
+        "nome_planta": "Jucara",
+        "posicao": [
+          228,
+          100
+        ],
+        "tempo_colheita": 2555
+      }
+    ],
+    "baixo": [
+      {
+        "diametro": 40,
+        "estrato": "baixo",
+        "nome_planta": "Abacaxi",
+        "posicao": [
+          47,
+          33
+        ],
+        "tempo_colheita": 730
+      },
+      {
+        "diametro": 40,
+        "estrato": "baixo",
+        "nome_planta": "Abacaxi",
+        "posicao": [
+          94,
+          33
+        ],
+        "tempo_colheita": 730
+      }
+    ],
+    "emergente": [],
+    "medio": [
+      {
+        "diametro": 50,
+        "estrato": "medio",
+        "nome_planta": "Pimenta-do-reino",
+        "posicao": [
+          58,
+          50
+        ],
+        "tempo_colheita": 1460
+      },
+      {
+        "diametro": 50,
+        "estrato": "medio",
+        "nome_planta": "Pimenta-do-reino",
+        "posicao": [
+          116,
+          50
+        ],
+        "tempo_colheita": 1460
+      }
+    ]
+}
+
 
  
 class PlantaCanteiroSchema(BaseModel):
