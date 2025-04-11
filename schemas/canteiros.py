@@ -3,7 +3,7 @@ from typing import List, Optional
 from model.plantas import Planta
 from model.estratos import Estrato
 
-class PlantaSchema(BaseModel):
+class PlantaCanteiroSchema(BaseModel):
     espacamento: int
     estrato: str
     nome_planta: str
@@ -11,7 +11,7 @@ class PlantaSchema(BaseModel):
     tempo_colheita: int
 
 class PlantasCanteiroSchema(BaseModel):
-    plantas: List[PlantaSchema] =  [
+    plantas: List[PlantaCanteiroSchema] =  [
             {
               "espacamento": 200,
               "estrato": "emergente",
