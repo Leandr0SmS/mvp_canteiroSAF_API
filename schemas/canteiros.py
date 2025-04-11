@@ -1,7 +1,67 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 from model.plantas import Planta
 from model.estratos import Estrato
+
+class PlantaSchema(BaseModel):
+    espacamento: int
+    estrato: str
+    nome_planta: str
+    sombra: int
+    tempo_colheita: int
+
+class PlantasCanteiroSchema(BaseModel):
+    plantas: List[PlantaSchema] =  [
+            {
+              "espacamento": 200,
+              "estrato": "emergente",
+              "nome_planta": "Embaúba",
+              "sombra": 20,
+              "tempo_colheita": 1095
+            },
+            {
+              "espacamento": 100,
+              "estrato": "alto",
+              "nome_planta": "Jucara",
+              "sombra": 40,
+              "tempo_colheita": 2555
+            },
+            {
+              "espacamento": 50,
+              "estrato": "medio",
+              "nome_planta": "Pimenta-do-reino",
+              "sombra": 60,
+              "tempo_colheita": 1460
+            },
+            {
+              "espacamento": 40,
+              "estrato": "baixo",
+              "nome_planta": "Abacaxi",
+              "sombra": 80,
+              "tempo_colheita": 730
+            }
+        ]
+
+class CanteiroSchema(BaseModel):
+    """ Define como um novo canteiro deve ser representado
+    """
+    nome_canteiro: str = "Canteiro1"
+    x_canteiro: int = 800
+    y_canteiro: int = 200
+    plantas_canteiro: PlantasCanteiroSchema
+
+
+class ListagemCanteirosSchema(BaseModel):
+    """ Define como uma listagem dos Canteiro será retornada.
+    """
+    plantas:List[CanteiroSchema]
+
+
+class CanteiroDeleteSchema(BaseModel):
+    """ Define como deve ser a estrutura que deleta o canteiro. Que será
+        com base no nome das plantas.
+    """
+    nome_canteiro: str = "Canteiro1"
 
 
 class CanteiroBuscaSchema(BaseModel):
@@ -15,6 +75,45 @@ class CanteiroBuscaSchema(BaseModel):
     id_planta_alto: int = 22
     id_planta_medio: int = 18
     id_planta_baixo: int = 3
+
+class CanteiroUpdateSchema(BaseModel):
+    """ Define como um canteiro deve ser editado
+    """
+    nome_canteiro: str = "Canteiro1"
+    x_canteiro: Optional[int] = 1100
+    y_canteiro: Optional[int] = 250
+    plantas_canteiro: Optional[dict] = {
+        "plantas": [
+            {
+              "espacamento": 200,
+              "estrato": "emergente",
+              "nome_planta": "Embaúba",
+              "sombra": 20,
+              "tempo_colheita": 1095
+            },
+            {
+              "espacamento": 100,
+              "estrato": "alto",
+              "nome_planta": "Jucara",
+              "sombra": 40,
+              "tempo_colheita": 2555
+            },
+            {
+              "espacamento": 50,
+              "estrato": "medio",
+              "nome_planta": "Pimenta-do-reino",
+              "sombra": 60,
+              "tempo_colheita": 1460
+            },
+            {
+              "espacamento": 40,
+              "estrato": "baixo",
+              "nome_planta": "Abacaxi",
+              "sombra": 80,
+              "tempo_colheita": 730
+            }
+        ]
+    }
 
  
 class PlantaCanteiroSchema(BaseModel):
@@ -31,6 +130,7 @@ class ListagemCanteiroSchema(BaseModel):
     """ Define como uma listagem de plantas será retornada.
     """
     canteiro:List[PlantaCanteiroSchema]
+
 
 def monta_canteiro(plantas_canteiro: tuple[(Planta, Estrato)]):
     """ Retorna uma representação de um canteiro com as plantas e seus estratos.
@@ -49,11 +149,11 @@ def monta_canteiro(plantas_canteiro: tuple[(Planta, Estrato)]):
     return {"plantas": result}
 
 def apresenta_canteiro(
-        plantas_canteiro: tuple[(Planta, Estrato)], 
-        dados_grafico,
         nome_canteiro,
         x_canteiro,
-        y_canteiro
+        y_canteiro,
+        plantas_canteiro: tuple[(Planta, Estrato)], 
+        dados_grafico,
         ):
     """ Retorna uma representação de um canteiro com as plantas e seus estratos.
     """
@@ -69,9 +169,9 @@ def apresenta_canteiro(
         })
 
     return {
-        "plantas": result,
         "nome_canteiro": nome_canteiro,
         "x_canteiro": x_canteiro,
         "y_canteiro": y_canteiro,
+        "plantas": result,
         "dados_grafico": dados_grafico
         }
