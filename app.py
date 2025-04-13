@@ -335,11 +335,54 @@ def editar_canteiro(form: CanteiroUpdateSchema):
     """
     Encaminha requisição de edição de um canteiro para a API secundária.
     """
+    
+    print(form)
+    id_planta_emergente = form.id_planta_emergente
+    id_planta_alto = form.id_planta_alto
+    id_planta_medio = form.id_planta_medio
+    id_planta_baixo = form.id_planta_baixo
+    
+    listaCanteiro = []
+    logger.debug(f"""Coletando dados para montar canteiro 
+                 #{id_planta_emergente}
+                 #{id_planta_alto}
+                 #{id_planta_medio}
+                 #{id_planta_baixo}
+                 """)
+    with Session() as session:
+        planta_emergente = session.query(Planta, Estrato)\
+            .join(Estrato, Planta.estrato == Estrato.nome_estrato)\
+            .filter(Planta.id_planta == id_planta_emergente).first()
+        listaCanteiro.append(planta_emergente)
+        planta_alto = session.query(Planta, Estrato)\
+            .join(Estrato, Planta.estrato == Estrato.nome_estrato)\
+            .filter(Planta.id_planta == id_planta_alto).first()
+        listaCanteiro.append(planta_alto)
+        planta_medio = session.query(Planta, Estrato)\
+            .join(Estrato, Planta.estrato == Estrato.nome_estrato)\
+            .filter(Planta.id_planta == id_planta_medio).first()
+        listaCanteiro.append(planta_medio)
+        planta_baixo = session.query(Planta, Estrato)\
+            .join(Estrato, Planta.estrato == Estrato.nome_estrato)\
+            .filter(Planta.id_planta == id_planta_baixo).first()
+        listaCanteiro.append(planta_baixo)
+
+        if not all(tuple is not None for tuple in listaCanteiro):
+            error_msg = "erro na seleção de plantas para montar o canteiro"
+            logger.warning(f"Erro ao montar canteiro '{listaCanteiro}', {error_msg}")
+            return {"message": error_msg}, 404
+
     try:
+        canteiro_data_init = {
+            "nome_canteiro": form.nome_canteiro,
+            "x_canteiro": form.x_canteiro,
+            "y_canteiro": form.y_canteiro,
+            "plantas_canteiro": monta_canteiro(listaCanteiro)
+        }
         headers = {"Content-Type": "application/json"}
         response = requests.post(
             f"{API_CANTEIRO_URL}/canteiro",
-            json=form.model_dump(),
+            json=canteiro_data_init,
             headers=headers
         )
 
