@@ -42,9 +42,9 @@ class PlantaUpdateSchema(BaseModel):
     """ Define como uma nova planta a ser editada deve ser representada
     """
     nome_planta: str = "Bananeira Prata"
-    tempo_colheita: Optional[int] = None #300
-    estrato: Optional[str] = None #"medio"
-    espacamento: Optional[float] = None #2
+    tempo_colheita: Optional[int] = None 
+    estrato: Optional[str] = None 
+    espacamento: Optional[float] = None 
     
     @field_validator("tempo_colheita", "espacamento", mode="before")
     @classmethod

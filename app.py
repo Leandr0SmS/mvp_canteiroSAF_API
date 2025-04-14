@@ -157,9 +157,9 @@ def del_planta(query: PlantaBuscaSchema):
              "500": ErrorSchema
          })
 def put_canteiro(body: CanteiroCriaSchema):
-    """Adiciona um canteiro
+    """Adiciona um canteiro via resquest API_system_design
 
-    Retorna uma representação do canteiro.
+    Retorna uma representação do canteiro com as plantas destribuidas.
     """
     id_planta_emergente = body.id_planta_emergente
     id_planta_alto = body.id_planta_alto
@@ -248,7 +248,7 @@ def put_canteiro(body: CanteiroCriaSchema):
             responses={"200": CanteiroDeleteSchema, "404": ErrorSchema})
 def del_canteiro(query: CanteiroDeleteSchema):
     """
-    Deleta um Canteiro a partir do nome
+    Deleta um Canteiro a partir do nome via resquest API_system_design
 
     Retorna uma mensagem de confirmação da remoção.
     """
@@ -259,7 +259,7 @@ def del_canteiro(query: CanteiroDeleteSchema):
         }
         response = requests.delete(
             f"{API_CANTEIRO_URL}/canteiro",
-            params={"nome_canteiro": canteiro_nome},  # Usa como query param
+            params={"nome_canteiro": canteiro_nome},
             headers=headers
         )
 
@@ -281,7 +281,9 @@ def del_canteiro(query: CanteiroDeleteSchema):
          responses={"200": CanteiroSchemaDestribuido, "404": ErrorSchema, "500": ErrorSchema})
 def obter_canteiro_por_nome(query: CanteiroBuscaSchema):
     """
-    Recebe o nome do canteiro do frontend, consulta a API de canteiro e repassa a resposta.
+    Recebe o nome do canteiro do frontend, consulta via resquest API_system_design
+    
+    Retorna canteiro Schema com plantas destribuidas
     """
     nome_canteiro = unquote(unquote(query.nome_canteiro))
 
@@ -310,7 +312,7 @@ def obter_canteiro_por_nome(query: CanteiroBuscaSchema):
          responses={"200": ListagemCanteirosSchema, "500": ErrorSchema})
 def listar_canteiros():
     """
-    Encaminha a requisição para a API secundária para listar todos os canteiros.
+    Solicita todos os canteiros via resquest API_system_design.
     
     Retorna uma lista com todos os canteiros cadastrados.
     """
@@ -333,10 +335,11 @@ def listar_canteiros():
           responses={"200": CanteiroUpdateSchema, "400": ErrorSchema, "404": ErrorSchema, "409": ErrorSchema})
 def editar_canteiro(form: CanteiroUpdateSchema):
     """
-    Encaminha requisição de edição de um canteiro para a API secundária.
+    Encaminha requisição de edição de um canteiro via resquest API_system_design.
+    
+    Retorna uma mensagem de confirmação.
     """
     
-    print(form)
     id_planta_emergente = form.id_planta_emergente
     id_planta_alto = form.id_planta_alto
     id_planta_medio = form.id_planta_medio
